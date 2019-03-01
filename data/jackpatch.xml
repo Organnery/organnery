@@ -1,0 +1,27 @@
+<!DOCTYPE patchbay>
+<patchbay version="0.5.0" name="jackpatch">
+ <output-sockets>
+  <socket client="aeolus" type="jack-audio" name="aeolus 1" exclusive="off">
+   <plug>out\.L</plug>
+   <plug>out\.R</plug>
+  </socket>
+  <socket client="SAMSON Graphite 49" type="alsa-midi" name="SAMSON Graphite 1" exclusive="off">
+   <plug>SAMSON Graphite 49 MIDI 1</plug>
+  </socket>
+ </output-sockets>
+ <input-sockets>
+  <socket client="system" type="jack-audio" name="system 1" exclusive="off">
+   <plug>playback_1</plug>
+   <plug>playback_2</plug>
+  </socket>
+  <socket client="aeolus" type="alsa-midi" name="aeolus 1" exclusive="off">
+   <plug>In</plug>
+  </socket>
+ </input-sockets>
+ <slots/>
+ <cables>
+  <cable type="jack-audio" input="system 1" output="aeolus 1"/>
+  <cable type="alsa-midi" input="aeolus 1" output="SAMSON Graphite 1"/>
+ </cables>
+</patchbay>
+
