@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# kill previous
+killall --wait aeolus
+
+# start daemon
+aeolus -u -S stops -A &
+pid=$!
+
+# connect aeolus midi
+while ! aconnect pisound aeolus; do sleep 1; done
+
+# wait for aeolus to quit
+wait $!
+
+# restart script
+/usr/share/organnery/organnery

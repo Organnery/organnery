@@ -1,0 +1,9 @@
+organnery usr/share/organnery
+organnery-panels usr/share/organnery
+organnery-panels.desktop usr/share/applications
+organnery-setup usr/share/organnery
+organnery-soundcard-setup usr/share/organnery
+organnery.desktop usr/share/applications
+
+panels usr/share/organnery
+data usr/share/organnery

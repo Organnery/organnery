@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+cd /usr/share/organnery/panels
+
+# launch panels
+python2 panels.py &
+pid=$1
+
+# wait for panels.py to quit
+wait $pid
+
+# restart script
+/usr/share/organnery/organnery-panels

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+#DEBHELPER#
+
+exit 0

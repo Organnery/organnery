@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+USERNAME=user
+
+# extract stops
+tar -xf /usr/share/organnery/data/stops.tar.gz -C /home/$USERNAME
+
+# copy presets
+cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/.aeolus-presets
+
+# start application on boot
+if [ ! -L /home/$USERNAME/.config/autostart/organnery.desktop ] ; then
+	mkdir -p /home/$USERNAME/.config/autostart
+	chown $USERNAME:$USERNAME /home/$USERNAME/.config/autostart
+	ln -s /usr/share/applications/organnery.desktop /home/$USERNAME/.config/autostart/organnery.desktop
+	ln -s /usr/share/applications/organnery-panels.desktop /home/$USERNAME/.config/autostart/organnery-panels.desktop
+fi
+
+# change password
+ENCRYPTED_PASSWORD=`mkpasswd -m sha-512 "user"`
+usermod -aG audio $USERNAME
+usermod -aG sudo $USERNAME
+usermod -p "${ENCRYPTED_PASSWORD}" $USERNAME
+
+# autologin
+sed -i "s/^autologin-user=AUTOLOGIN-USER-NOT-CONFIGURED/autologin-user=$USERNAME/" /etc/lightdm/lightdm.conf.d/lightdm-autologin-greeter.conf
+
+#DEBHELPER#
+
+exit 0

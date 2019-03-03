@@ -1,0 +1,19 @@
+Source: organnery
+Priority: optional
+Section: sound
+Maintainer: Christopher Obbard <chris@64studio.com>
+Build-Depends: debhelper (>= 12), dh-systemd
+Standards-Version: 3.9.8
+
+Package: organnery
+Architecture: any
+Pre-Depends: whois,
+ lightdm-autologin-greeter
+Depends: ${misc:Depends},
+ ${shlibs:Depends},
+ alsa-utils,
+ aeolus,
+# python-pygame (= 1.9.1release+dfsg-10+b2),
+ python-pygame
+Description: Organnery
+ Setup scripts for the Organnery system

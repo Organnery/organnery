@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Organnery Panels
+Comment=organnery panels
+Exec=/usr/share/organnery/organnery-panels
+Icon=application.png
+Terminal=false
+Categories=AudioVideo;Audio;Player;

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo "organnery-soundcard-setup"
+aplay -l

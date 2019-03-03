@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+USERNAME=user
+
+# create user
+adduser --gecos $USERNAME --add_extra_groups --disabled-password $USERNAME
+chown $USERNAME:$USERNAME /home/$USERNAME
+
+#DEBHELPER#
+
+exit 0
