@@ -3,12 +3,17 @@
 # kill previous
 killall --wait aeolus
 
+# find hardware midi ports
+cards=$(aconnect -l | grep type=kernel,card | awk -F[\ ,:] '{print $2}')
+
 # start daemon
 aeolus -u -S stops -A &
 pid=$!
 
-# connect aeolus midi
-while ! aconnect pisound aeolus; do sleep 1; done
+# connect each card to aeolus
+for card in $cards; do
+    while ! aconnect $card aeolus; do sleep 1; done
+done
 
 # wait for aeolus to quit
 wait $!
