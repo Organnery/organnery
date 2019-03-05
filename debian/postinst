@@ -9,11 +9,14 @@ tar -xf /usr/share/organnery/data/stops.tar.gz -C /home/$USERNAME
 cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/.aeolus-presets
 
 # start application on boot
-if [ ! -L /home/$USERNAME/.config/autostart/organnery.desktop ] ; then
-	mkdir -p /home/$USERNAME/.config/autostart
-	chown $USERNAME:$USERNAME /home/$USERNAME/.config/autostart
-	ln -s /usr/share/applications/organnery.desktop /home/$USERNAME/.config/autostart/organnery.desktop
-	ln -s /usr/share/applications/organnery-panels.desktop /home/$USERNAME/.config/autostart/organnery-panels.desktop
+if [ ! -f /home/$USERNAME/.config/openbox/autostart.sh ] ; then
+	mkdir -p /home/$USERNAME/.config/openbox
+cat << EOF > /home/$USERNAME/.config/openbox/autostart.sh
+#!/usr/bin/env bash
+/usr/share/organnery/organnery &
+EOF
+	chmod +x /home/$USERNAME/.config/openbox/autostart.sh
+	chown $USERNAME:$USERNAME /home/$USERNAME/.config/openbox/autostart.sh
 fi
 
 # change password
