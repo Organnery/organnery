@@ -13,6 +13,7 @@ Depends: ${misc:Depends},
  ${shlibs:Depends},
  aeolus,
  alsa-utils,
+ cpufrequtils,
  mididings,
  python-pygame
 Description: Organnery

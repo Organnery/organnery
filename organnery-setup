@@ -1,2 +1,5 @@
 #!/usr/bin/env bash
 echo "organnery-setup"
+
+# set cpu governor to performance
+cpufreq-set -r -g performance
