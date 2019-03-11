@@ -28,6 +28,9 @@ usermod -p "${ENCRYPTED_PASSWORD}" $USERNAME
 # autologin
 sed -i "s/^autologin-user=AUTOLOGIN-USER-NOT-CONFIGURED/autologin-user=$USERNAME/" /etc/lightdm/lightdm.conf.d/lightdm-autologin-greeter.conf
 
+# no screensaver
+sed -i "s/^#xserver-command=X/xserver-command=X -s 0 -dpms/" /etc/lightdm/lightdm.conf
+
 #DEBHELPER#
 
 exit 0

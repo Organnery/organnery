@@ -8,6 +8,7 @@ Standards-Version: 3.9.8
 Package: organnery
 Architecture: any
 Pre-Depends: whois,
+ lightdm,
  lightdm-autologin-greeter
 Depends: ${misc:Depends},
  ${shlibs:Depends},
