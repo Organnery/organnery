@@ -6,6 +6,7 @@ organnery-panels.desktop usr/share/applications
 organnery-setup usr/share/organnery
 organnery-soundcard-setup usr/share/organnery
 organnery.desktop usr/share/applications
+overlayRoot.sh usr/share/organnery
 
 panels usr/share/organnery
 data usr/share/organnery
