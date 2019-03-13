@@ -1,11 +1,11 @@
 [Unit]
-Description=organnery soundcard setup
+Description=organnery setup
 After=sound.target
 Requires=sound.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/share/organnery/organnery-soundcard-setup
+ExecStart=/usr/share/organnery/organnery-setup
 
 [Install]
 Alias=organnery
