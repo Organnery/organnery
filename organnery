@@ -2,17 +2,24 @@
 
 # kill previous
 killall --wait aeolus
+killall --wait mididings
 
 # find hardware midi ports
 cards=$(aconnect -l | grep type=kernel,card | awk -F[\ ,:] '{print $2}')
 
-# start daemon
+# start mididings script
+mididings -f /usr/share/organnery/mididings-aeolus.py &
+
+# start aeolus
 aeolus -u -S stops -A &
 pid=$!
 
-# connect each card to aeolus
+# connect mididings out to aeolus in
+while ! aconnect mididings:1 aeolus:0; do sleep 1; done
+
+# connect each card to mididings
 for card in $cards; do
-    while ! aconnect $card aeolus; do sleep 1; done
+    while ! aconnect "$card" mididings; do sleep 1; done
 done
 
 # wait for aeolus to quit
