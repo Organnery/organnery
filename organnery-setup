@@ -3,3 +3,32 @@ echo "organnery-setup"
 
 # set cpu governor to performance
 cpufreq-set -r -g performance
+
+# simple automount script
+MEDIA=sda1
+USERNAME=user
+
+# wait for $MEDIA to be detected
+while ! lsblk | grep $MEDIA; do sleep 1; done
+
+# mount $MEDIA
+mkdir /mnt/$MEDIA
+mount /dev/$MEDIA /mnt/$MEDIA
+
+# check presets file exists
+if [ -f /mnt/$MEDIA/.aeolus-presets ]; then
+	# copy the file into home directory
+	cp /mnt/$MEDIA/.aeolus-presets /home/$USERNAME/.aeolus-presets
+	chown $USERNAME:$USERNAME /home/$USERNAME/.aeolus-presets
+
+	# kill aeolus to restart to load changes
+	killall aeolus
+fi
+
+# every 30s backup presets if the USB stick is mounted
+while true; do
+	if mount | grep /mnt/$MEDIA; then
+		cp /home/$USERNAME/.aeolus-presets /mnt/$MEDIA/.aeolus-presets
+	fi
+	sleep 30
+done
