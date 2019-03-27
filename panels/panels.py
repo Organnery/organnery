@@ -102,22 +102,43 @@ print ("Using midi output :%s" % port)
 midiout = pygame.midi.Output(port, 0)
 
 #define GUI dimensions
-size = width, height = 500, 240
+size = width, height = 1160, 772
 #open the pygame window
 screen = pygame.display.set_mode(size)
 
 #load and set background image
-background = pygame.image.load("wood.jpg").convert()
+background = pygame.image.load("darkwood.jpg").convert()
 backgroundrect = background.get_rect()
 screen.blit(background, backgroundrect)
 
-#create buttons
-but1 = button("but1","on.png","off.png",20,20,NOTE,64,100,0,1)
-but2 = button("but2","on.png","off.png",250,20,NOTE,72,100,0,1)
+#create buttons for ManIII
+butM3 = button("MANIII","MANIII.png","MANIII.png",450,590,CC,100,100,100,10)
+but1 = button("but1","III-principal8-on.png","III-principal8-off.png",10,10,CC,0,100,0,1)
+but2 = button("but2","III-gemshorn8-on.png","III-gemshorn8-off.png",300,10,CC,1,100,0,1)
+but3 = button("but3","III-quintadena8-on.png","III-quintadena8-off.png",590,10,CC,2,100,0,1)
+but4 = button("but3","III-suabile8-on.png","III-suabile8-off.png",880,10,CC,3,100,0,1)
+but5 = button("but3","III-rohrflote4-on.png","III-rohrflote4-off.png",10,300,CC,4,100,0,1)
+but6 = button("but3","III-dulzflote4-on.png","III-dulzflote4-off.png",300,300,CC,5,100,0,1)
+but7 = button("but3","III-quintflote223-on.png","III-quintflote223-off.png",590,300,CC,6,100,0,1)
+but8 = button("but3","III-superoctave2-on.png","III-superoctave2-off.png",880,300,CC,7,100,0,1)
+butM3.LoadImages()
 but1.LoadImages()
 but2.LoadImages()
+but3.LoadImages()
+but4.LoadImages()
+but5.LoadImages()
+but6.LoadImages()
+but7.LoadImages()
+but8.LoadImages()
+butM3.ShowOff()
 but1.ShowOff()
 but2.ShowOff()
+but3.ShowOff()
+but4.ShowOff()
+but5.ShowOff()
+but6.ShowOff()
+but7.ShowOff()
+but8.ShowOff()
 
 #refresh screen
 pygame.display.flip()
@@ -139,13 +160,32 @@ while running:
 			but1.SendMidiOnTouch(event)
 			#check button2
 			but2.SendMidiOnTouch(event)
+			#check button3
+			but3.SendMidiOnTouch(event)
+			#check button4
+			but4.SendMidiOnTouch(event)
+			#check button5
+			but5.SendMidiOnTouch(event)
+			#check button6
+			but6.SendMidiOnTouch(event)
+			#check button7
+			but7.SendMidiOnTouch(event)
+			#check button8
+			but8.SendMidiOnTouch(event)
 
 		#refresh background image
 		screen.blit(background, backgroundrect)
 
 		#update buttons status images
+		butM3.Refresh()
 		but1.Refresh()
 		but2.Refresh()
+		but3.Refresh()
+		but4.Refresh()
+		but5.Refresh()
+		but6.Refresh()
+		but7.Refresh()
+		but8.Refresh()
 
 		#refresh screen
 		pygame.display.flip()
