@@ -1,3 +1,9 @@
+organnery (0.2) UNRELEASED; urgency=low
+
+  * Update default tuning and instrument preset files
+
+ -- Daniel James <daniel@64studio.com>  Tue, 11 Jun 2019 21:45:25 +0100
+
 organnery (0.1) UNRELEASED; urgency=low
 
   * Initial release.
