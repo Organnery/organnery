@@ -16,7 +16,7 @@ pid=$!
 
 # connect each card out to aeolus in
 for card_out in $cards_out; do
-    aconnect "$card_out" aeolus:0
+    while ! aconnect "$card_out" aeolus:0; do sleep 1; done
 done
 
 # connect aeolus out to each card in
