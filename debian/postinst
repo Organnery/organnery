@@ -2,8 +2,8 @@
 
 USERNAME=user
 
-# extract stops
-tar -xf /usr/share/organnery/data/stops.tar.gz -C /home/$USERNAME
+# copy stops
+cp -r /usr/share/organnery/data/stops /home/$USERNAME
 chown -R $USERNAME:$USERNAME /home/$USERNAME/stops
 
 # copy presets
