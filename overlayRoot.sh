@@ -4,10 +4,10 @@
 #
 #  Version History:
 #  1.0: initial release
-#  1.1: adopted new fstab style with PARTUUID. the script will now look for a /dev/xyz definiton first 
+#  1.1: adopted new fstab style with PARTUUID. the script will now look for a /dev/xyz definiton first
 #       (old raspbian), if that is not found, it will look for a partition with LABEL=rootfs, if that
 #       is not found it look for a PARTUUID string in fstab for / and convert that to a device name
-#       using the blkid command. 
+#       using the blkid command.
 #
 #  Created 2017 by Pascal Suter @ DALCO AG, Switzerland to work on Raspian as custom init script
 #  (raspbian does not use an initramfs on boot)
@@ -29,26 +29,26 @@
 #
 #  Tested with Raspbian mini, 2018-10-09
 #
-#  This script will mount the root filesystem read-only and overlay it with a temporary tempfs 
-#  which is read-write mounted. This is done using the overlayFS which is part of the linux kernel 
-#  since version 3.18. 
-#  when this script is in use, all changes made to anywhere in the root filesystem mount will be lost 
+#  This script will mount the root filesystem read-only and overlay it with a temporary tempfs
+#  which is read-write mounted. This is done using the overlayFS which is part of the linux kernel
+#  since version 3.18.
+#  when this script is in use, all changes made to anywhere in the root filesystem mount will be lost
 #  upon reboot of the system. The SD card will only be accessed as read-only drive, which significantly
 #  helps to prolong its life and prevent filesystem coruption in environments where the system is usually
-#  not shut down properly 
+#  not shut down properly
 #
-#  Install: 
-#  copy this script to /sbin/overlayRoot.sh, make it executable and add "init=/sbin/overlayRoot.sh" to the 
-#  cmdline.txt file in the raspbian image's boot partition. 
-#  I strongly recommend to disable swapping before using this. it will work with swap but that just does 
+#  Install:
+#  copy this script to /sbin/overlayRoot.sh, make it executable and add "init=/sbin/overlayRoot.sh" to the
+#  cmdline.txt file in the raspbian image's boot partition.
+#  I strongly recommend to disable swapping before using this. it will work with swap but that just does
 #  not make sens as the swap file will be stored in the tempfs which again resides in the ram.
 #  run these commands on the booted raspberry pi BEFORE you set the init=/sbin/overlayRoot.sh boot option:
 #  sudo dphys-swapfile swapoff
 #  sudo dphys-swapfile uninstall
 #  sudo update-rc.d dphys-swapfile remove
 #
-#  To install software, run upgrades and do other changes to the raspberry setup, simply remove the init= 
-#  entry from the cmdline.txt file and reboot, make the changes, add the init= entry and reboot once more. 
+#  To install software, run upgrades and do other changes to the raspberry setup, simply remove the init=
+#  entry from the cmdline.txt file and reboot, make the changes, add the init= entry and reboot once more.
 
 fail(){
 	echo -e "$1"
@@ -65,7 +65,7 @@ mount -t proc proc /proc
 if [ $? -ne 0 ]; then
     fail "ERROR: could not mount proc"
 fi
-# create a writable fs to then create our mountpoints 
+# create a writable fs to then create our mountpoints
 mount -t tmpfs inittemp /mnt
 if [ $? -ne 0 ]; then
     fail "ERROR: could not create a temporary filesystem to mount the base filesystems for overlayfs"
@@ -79,7 +79,7 @@ fi
 mkdir /mnt/rw/upper
 mkdir /mnt/rw/work
 mkdir /mnt/newroot
-# mount root filesystem readonly 
+# mount root filesystem readonly
 rootDev=`awk '$2 == "/" {print $1}' /etc/fstab`
 rootMountOpt=`awk '$2 == "/" {print $4}' /etc/fstab`
 rootFsType=`awk '$2 == "/" {print $3}' /etc/fstab`
@@ -93,7 +93,7 @@ if [ $? -gt 0 ]; then
         echo "no luck either, try to further parse fstab's root device definition"
         echo "try if fstab contains a PARTUUID definition"
         echo "$rootDevFstab" | grep 'PARTUUID=\(.*\)-\([0-9]\{2\}\)'
-        if [ $? -gt 0 ]; then 
+        if [ $? -gt 0 ]; then
 	    fail "could not find a root filesystem device in fstab. Make sure that fstab contains a device definition or a PARTUUID entry for / or that the root filesystem has a label 'rootfs' assigned to it"
         fi
         device=""
@@ -137,7 +137,7 @@ if [ $? -ne 0 ]; then
     echo "ERROR: could not move tempfs rw mount into newroot"
     /bin/bash
 fi
-# unmount unneeded mounts so we can unmout the old readonly root
+# unmount unneeded mounts so we can unmount the old readonly root
 umount /mnt/mnt
 umount /mnt/proc
 umount /mnt/dev
