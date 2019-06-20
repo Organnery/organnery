@@ -11,7 +11,7 @@ cards_in=$(aconnect -i | grep type=kernel,card | awk -F[\ ,:] '{print $2}')
 cards_out=$(aconnect -o | grep type=kernel,card | awk -F[\ ,:] '{print $2}')
 
 # start aeolus
-aeolus -u -S stops -A &
+HOME=$HOME/stops aeolus -u -S stops -A &
 pid=$!
 
 # connect each card out to aeolus in
