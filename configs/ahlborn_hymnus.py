@@ -67,7 +67,9 @@ run(
 		ChannelFilter(3) >> CtrlFilter(46) >> CtrlValueFilter(0x0e) >> Channel(1) >> aeolus_stop(2, 14, False),
 
 		# EXP Pedal (swell for ManI and ManII)
-		ChannelFilter(1) >> CtrlFilter(0x07) >> [ Channel(1), Channel(2) ],
+		ChannelFilter(1) >> CtrlFilter(0x07) >> [ Channel(1), Channel(2) ], # maps to Ch1 & Ch2 swell sliders
+		# ChannelFilter(1) >> CtrlFilter(0x07) >> Ctrl(16, EVENT_VALUE) >> [ Channel(1), Channel(2) ], # maps to Ch1 & Ch2 direct sliders
+		# ChannelFilter(1) >> CtrlFilter(0x07) >> Channel(1) >> Ctrl(23, EVENT_VALUE), # maps to master volume slider
 
 		# Cresendo Pedal
 		ChannelFilter(16) >> ProgramFilter(0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6a, 0x6b, 0x6c, 0x6d) >> Channel(1) >> Process(transpose_cresendo_value) >> Ctrl(33, EVENT_PROGRAM),
