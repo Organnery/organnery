@@ -1,6 +1,7 @@
 mididings-aeolus.py usr/share/organnery
 
 organnery usr/share/organnery
+organnery-config usr/bin
 organnery-panels usr/share/organnery
 organnery-panels.desktop usr/share/applications
 organnery-setup usr/share/organnery

@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+#
+# a configuration script to modify system parameters
+#
+
+OVERLAYFS_CMDLINE="init=/usr/share/organnery/overlayRoot.sh"
+
+
+# mount the boot partition RW
+mount_boot_rw()
+{
+        sudo umount /boot
+        sudo mount /dev/mmcblk0p1 /boot
+}
+
+
+if [ "$1" = "mount-boot" ]; then
+
+	# mount boot partition RW
+	mount_boot_rw
+	echo "boot partition now mounted rw"
+	
+elif [ "$1" = "overlayfs-check" ]; then
+
+	# check whether overlayfs is enabled for the current boot
+	if grep -q "$OVERLAYFS_CMDLINE" /proc/cmdline; then
+		echo "overlayfs is enabled for current session"
+	else
+		echo "overlayfs is disabled for current session"
+	fi
+
+
+	# check whether overlayfs is enabled for the next boot
+	if grep -q "$OVERLAYFS_CMDLINE" /boot/cmdline.txt; then
+		echo "overlayfs is enabled for the next session"
+	else
+		echo "overlayfs is disabled for the next session"
+	fi
+
+
+elif [ "$1" = "overlayfs-disable" ]; then
+
+	mount_boot_rw
+	sudo sed -i "s; $OVERLAYFS_CMDLINE;;g" /boot/cmdline.txt
+	echo "overlayfs disabled for the next session"
+
+elif [ "$1" = "overlayfs-enable" ]; then
+
+	if ! grep -q "$OVERLAYFS_CMDLINE" /boot/cmdline.txt; then
+		mount_boot_rw
+		CMDLINE=`cat /boot/cmdline.txt`
+		echo "$CMDLINE $OVERLAYFS_CMDLINE" | sudo tee /boot/cmdline.txt > /dev/null
+	fi
+	echo "overlayfs enabled for the next session"
+
+else
+	echo "ERROR: arguments not recognised!"
+	echo ""
+	echo "usage:"
+
+	echo "organnery-config mount-boot"
+	echo "	mount the boot partition as read/write"
+	echo ""
+	echo "organnery-config overlayfs-check"
+	echo "	checks the current overlayfs state"
+	echo ""
+	echo "organnery-config overlayfs-disable"
+	echo "	disables overlayfs for the next session"
+	echo ""
+	echo "organnery-config overlayfs-enable"
+	echo "	enables overlayfs for the next session"
+fi
