@@ -1,10 +1,22 @@
 #!/usr/bin/env bash
 
-# kill previous
-killall --wait aeolus
+# load default configuration file & attempt to load user configuration file from USB
+source /etc/organnery/organnery.conf
+if [ -f $HOME/stops/organnery.conf ]; then
+	source $HOME/stops/organnery.conf
+fi
 
-# disconnect midi connections
+# set a sane default
+if [ ! -f "$ORGANNERY_MIDIDINGS_SCRIPT" ]; then
+	ORGANNERY_MIDIDINGS_SCRIPT="/usr/share/organnery/configs/passthru.py"
+fi
+
+# disconnect all midi connections
 aconnect -x
+
+# kill previous incarnation of software
+killall --wait aeolus
+killall --wait mididings
 
 # find hardware midi ports
 cards_in=$(aconnect -i | grep type=kernel,card | awk -F[\ ,:] '{print $2}')
@@ -12,20 +24,29 @@ cards_out=$(aconnect -o | grep type=kernel,card | awk -F[\ ,:] '{print $2}')
 
 # start aeolus
 HOME=$HOME/stops aeolus -u -S stops -A &
-pid=$!
+AEOLUS_PID=$!
 
-# connect each card out to aeolus in
+# start mididings input script
+mididings -f "$ORGANNERY_MIDIDINGS_SCRIPT" &
+
+# todo: wait for mididings & aeolus midi ports to come up
+sleep 2
+
+# connect each hardware midi input to mididings input
 for card_out in $cards_out; do
-    while ! aconnect "$card_out" aeolus:0; do sleep 1; done
+	aconnect "$card_out" mididings:0
 done
 
-# connect aeolus out to each card in
+# connect mididings out to aeolus in
+aconnect mididings:1 aeolus:In
+
+# connect aeolus out to each midi hardware output
 for card_in in $cards_in; do
-    aconnect aeolus:1 "$card_in"
+	aconnect aeolus:1 "$card_in"
 done
 
 # wait for aeolus to quit
-wait $!
+wait $AEOLUS_PID
 
 # restart script
 /usr/share/organnery/organnery

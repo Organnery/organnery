@@ -1,12 +1,17 @@
 mididings-aeolus.py usr/share/organnery
 
+configs/ahlborn_hymnus.py usr/share/organnery/configs
+configs/passthru.py usr/share/organnery/configs
+
 organnery usr/share/organnery
 organnery-config usr/bin
 organnery-panels usr/share/organnery
 organnery-panels.desktop usr/share/applications
 organnery-setup usr/share/organnery
+organnery.conf etc/organnery
 organnery.desktop usr/share/applications
 overlayRoot.sh usr/share/organnery
 
 #panels usr/share/organnery
+
 data usr/share/organnery
