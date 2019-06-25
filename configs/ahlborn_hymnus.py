@@ -1,3 +1,7 @@
+# Filter for Hymnus type -990941- from year 2000
+# to aeolus default organ "Aeolus"
+# mapping according to file ahlborn_hymnus.ods
+
 from mididings import *
 
 # enable/disable a stop
@@ -10,12 +14,10 @@ def aeolus_stop(group, stop, state):
 	else:
 		return [ Ctrl(EVENT_PORT, 1, 98, 0x50 | group), Ctrl(EVENT_PORT, 1, 98, stop) ]
 
-
 # transpose the cresendo value > preset value
 def transpose_cresendo_value(ev):
 	ev.program = ev.program - 89
 	return ev
-
 
 run(
 	[
@@ -23,10 +25,10 @@ run(
 		ChannelFilter(2) >> Filter(NOTEON, NOTEOFF) >> Channel(2),
 
 		# Recit note on/off
-		ChannelFilter(1) >> Filter(NOTEON, NOTEOFF) >> Channel(3),
+		ChannelFilter(1) >> Filter(NOTEON, NOTEOFF) >> Channel(1),
 
 		# Pedal note on/off
-		ChannelFilter(4) >> Filter(NOTEON, NOTEOFF) >> Channel(1),
+		ChannelFilter(4) >> Filter(NOTEON, NOTEOFF) >> Channel(4),
 
 		# Tutti enable
 		ChannelFilter(16) >> CtrlFilter(0x47) >> CtrlValueFilter(0x42) >> Channel(1) >> Ctrl(29, 10),
@@ -44,26 +46,25 @@ run(
 		ChannelFilter(16) >> ProgramFilter(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) >> Channel(1) >> Ctrl(33, EVENT_PROGRAM),
 
 		# I-P enable
-		ChannelFilter(4) >> CtrlFilter(46) >> CtrlValueFilter(0x4d) >> aeolus_stop(3, 13, True),
+		ChannelFilter(4) >> CtrlFilter(0x46) >> CtrlValueFilter(0x4d) >> aeolus_stop(3, 13, True),
 
 		# I-P disable
-		ChannelFilter(4) >> CtrlFilter(46) >> CtrlValueFilter(0x0d) >> aeolus_stop(3, 13, False),
+		ChannelFilter(4) >> CtrlFilter(0x46) >> CtrlValueFilter(0x0d) >> aeolus_stop(3, 13, False),
 
 		# II-P enable
-		ChannelFilter(4) >> CtrlFilter(46) >> CtrlValueFilter(0x4e) >> aeolus_stop(3, 14, True),
+		ChannelFilter(4) >> CtrlFilter(0x46) >> CtrlValueFilter(0x4e) >> aeolus_stop(3, 14, True),
 
 		# II-P disable
-		ChannelFilter(4) >> CtrlFilter(46) >> CtrlValueFilter(0x0e) >> aeolus_stop(3, 14, False),
+		ChannelFilter(4) >> CtrlFilter(0x46) >> CtrlValueFilter(0x0e) >> aeolus_stop(3, 14, False),
 
 		# II-I enable
-		ChannelFilter(4) >> CtrlFilter(46) >> CtrlValueFilter(0x4e) >> aeolus_stop(2, 14, True),
+		ChannelFilter(4) >> CtrlFilter(0x46) >> CtrlValueFilter(0x4e) >> aeolus_stop(2, 14, True),
 
 		# II-I disable
-		ChannelFilter(4) >> CtrlFilter(46) >> CtrlValueFilter(0x0e) >> aeolus_stop(2, 14, False),
+		ChannelFilter(4) >> CtrlFilter(0x46) >> CtrlValueFilter(0x0e) >> aeolus_stop(2, 14, False),
 
 		# EXP Pedal (swell for ManI and ManII)
-		# todo: channel not specified in spreadsheet
-		ChannelFilter(16) >> CtrlFilter(0x07) >> [ Channel(1), Channel(2) ], # maps to Ch1 & Ch2 swell sliders
+		ChannelFilter(1) >> CtrlFilter(0x07) >> [ Channel(1), Channel(2) ], # maps to Ch1 & Ch2 swell sliders
 		# ChannelFilter(16) >> CtrlFilter(0x07) >> Ctrl(16, EVENT_VALUE) >> [ Channel(1), Channel(2) ], # maps to Ch1 & Ch2 direct sliders
 		# ChannelFilter(16) >> CtrlFilter(0x07) >> Channel(1) >> Ctrl(23, EVENT_VALUE), # maps to master volume slider
 
@@ -81,25 +82,13 @@ run(
 
 			# STOPS GRAND ORGUE
 			ChannelFilter(2) >> [
-				# 1 Montro 8 to Principal 8' & Tibia 8'
-				CtrlValueFilter(0x43) >> [
-					aeolus_stop(2, 0, True),
-					aeolus_stop(2, 6, True),
-				],
-				CtrlValueFilter(0x03) >> [
-					aeolus_stop(2, 0, False),
-					aeolus_stop(2, 6, False),
-				],
+				# 1 Montro 8 to Principal 8'
+				CtrlValueFilter(0x43) >> aeolus_stop(2, 0, True),
+				CtrlValueFilter(0x03) >> aeolus_stop(2, 0, False),
 
-				# 2 Doublette 2 to Principal 4' & Celesta 8'
-				CtrlValueFilter(0x45) >> [
-					aeolus_stop(2, 1, True),
-					aeolus_stop(2, 7, True),
-				],
-				CtrlValueFilter(0x05) >> [
-					aeolus_stop(2, 1, False),
-					aeolus_stop(2, 7, False),
-				],
+				# 2 Doublette 2 to Principal 4'
+				CtrlValueFilter(0x45) >> aeolus_stop(2, 1, True),
+				CtrlValueFilter(0x05) >> aeolus_stop(2, 1, False),
 
 				# 3 Cymbale 3R to Octave 2'
 				CtrlValueFilter(0x48) >> aeolus_stop(2, 2, True),
@@ -174,37 +163,23 @@ run(
 				CtrlValueFilter(0x4d) >> aeolus_stop(3, 13, True),
 				CtrlValueFilter(0x0d) >> aeolus_stop(3, 13, False),
 
-				# 19 Tirasse II-PED to P+II & P+III & Quint 5 1/3
+				# 19 Tirasse II-PED to P+II & P+III
 				CtrlValueFilter(0x4e) >> [
 					aeolus_stop(3, 14, True),
 					aeolus_stop(3, 15, True),
-					aeolus_stop(2, 4, True),
 				],
 				CtrlValueFilter(0x0e) >> [
 					aeolus_stop(3, 14, False),
 					aeolus_stop(3, 15, False),
-					aeolus_stop(2, 4, False),
 				],
 
-				# 20 Soubasse 16 to Subbass 16 & Quint 2 2/3
-				CtrlValueFilter(0x42) >> [
-					aeolus_stop(3, 0, True),
-					aeolus_stop(3, 7, True),
-				],
-				CtrlValueFilter(0x02) >> [
-					aeolus_stop(3, 0, False),
-					aeolus_stop(3, 7, False),
-				],
+				# 20 Soubasse 16 to Subbass 16
+				CtrlValueFilter(0x42) >> aeolus_stop(3, 0, True),
+				CtrlValueFilter(0x02) >> aeolus_stop(3, 0, False),
 
-				# 21 Bordon 8 to Trombone 16 & Fagott 16
-				CtrlValueFilter(0x44) >> [
-					aeolus_stop(3, 10, True),
-					aeolus_stop(3, 9, True),
-				],
-				CtrlValueFilter(0x04) >> [
-					aeolus_stop(3, 10, False),
-					aeolus_stop(3, 9, False),
-				],
+				# 21 Bordon 8 to Trombone 16
+				CtrlValueFilter(0x44) >> aeolus_stop(3, 10, True),
+				CtrlValueFilter(0x04) >> aeolus_stop(3, 10, False),
 
 				# 22 Flute ouvert 4 to Octave 1
 				CtrlValueFilter(0x46) >> aeolus_stop(3, 5, True),
@@ -246,59 +221,25 @@ run(
 				CtrlValueFilter(0x42) >> aeolus_stop(1, 4, True),
 				CtrlValueFilter(0x02) >> aeolus_stop(1, 4, False),
 
-				# 32 Nasard 2-2/3 to Tertia 1'3/5 & Sesqui-altera
-				CtrlValueFilter(0x48) >> [
-					aeolus_stop(1, 5, True),
-					aeolus_stop(1, 6, True),
-				],
-				CtrlValueFilter(0x08) >> [
-					aeolus_stop(1, 5, False),
-					aeolus_stop(1, 6, False),
-				],
+				# 32 Nasard 2-2/3 to Tertia 1'3/5
+				CtrlValueFilter(0x48) >> aeolus_stop(1, 5, True),
+				CtrlValueFilter(0x08) >> aeolus_stop(1, 5, False),
 
-				# 33 Flute 2 to Septime & Super octave 2'
-				CtrlValueFilter(0x44) >> [
-					aeolus_stop(1, 7, True),
-					aeolus_stop(0, 7, True),
-				],
-				CtrlValueFilter(0x04) >> [
-					aeolus_stop(1, 7, False),
-					aeolus_stop(0, 7, False),
-				],
+				# 33 Flute 2 to Septime
+				CtrlValueFilter(0x44) >> aeolus_stop(1, 7, True),
+				CtrlValueFilter(0x04) >> aeolus_stop(1, 7, False),
 
-				# 34 Tierce 1-3/5 to Principal 8' & Sifflet 1'
-				CtrlValueFilter(0x49) >> [
-					aeolus_stop(3, 2, True),
-					aeolus_stop(0, 8, True),
-				],
-				CtrlValueFilter(0x09) >> [
-					aeolus_stop(3, 2, False),
-					aeolus_stop(0, 8, False),
-				],
+				# 34 Tierce 1-3/5 to Principal 8'
+				CtrlValueFilter(0x49) >> aeolus_stop(3, 2, True),
+				CtrlValueFilter(0x09) >> aeolus_stop(3, 2, False),
 
-				# 35 Gambe 8 to Gemshorn 8' & Krumhorn & Cymbel VI
-				CtrlValueFilter(0x4a) >> [
-					aeolus_stop(0, 1, True),
-					aeolus_stop(1, 9, True),
-					aeolus_stop(2, 11, True),
-				],
-				CtrlValueFilter(0x0a) >> [
-					aeolus_stop(0, 1, False),
-					aeolus_stop(1, 9, False),
-					aeolus_stop(2, 11, False),
-				],
+				# 35 Gambe 8 to Gemshorn 8'
+				CtrlValueFilter(0x4a) >> aeolus_stop(0, 1, True),
+				CtrlValueFilter(0x0a) >> aeolus_stop(0, 1, False),
 
-				# 36 Voix celeste 8 to Quinta-dena 8' & Melodia & Oboe
-				CtrlValueFilter(0x4b) >> [
-					aeolus_stop(0, 2, True),
-					aeolus_stop(1, 10, True),
-					aeolus_stop(0, 10, True),
-				],
-				CtrlValueFilter(0x0b) >> [
-					aeolus_stop(0, 2, False),
-					aeolus_stop(1, 10, False),
-					aeolus_stop(0, 10, False),
-				],
+				# 36 Voix celeste 8 to Quinta-dena 8'
+				CtrlValueFilter(0x4b) >> aeolus_stop(0, 2, True),
+				CtrlValueFilter(0x0b) >> aeolus_stop(0, 2, False),
 
 				# 37 Regale 16 to Suabile 8'
 				CtrlValueFilter(0x4e) >> aeolus_stop(0, 3, True),
@@ -318,3 +259,39 @@ run(
 		],
 	]
 )
+
+# unused stops
+# Melodia & Oboe
+#	aeolus_stop(1, 10, True),
+#	aeolus_stop(0, 10, True),
+#	aeolus_stop(1, 10, False),
+#	aeolus_stop(0, 10, False),
+# Krumhorn & Cymbel VI
+#	aeolus_stop(1, 9, True),
+#	aeolus_stop(2, 11, True),
+#	aeolus_stop(1, 9, False),
+#	aeolus_stop(2, 11, False),
+# Sifflet 1'
+#	aeolus_stop(0, 8, True),
+#	aeolus_stop(0, 8, False),
+# Super octave 2'
+#	aeolus_stop(0, 7, True),
+#	aeolus_stop(0, 7, False),
+# Sesqui-altera
+#	aeolus_stop(1, 6, True),
+#	aeolus_stop(1, 6, False),
+# Fagott 16
+#	aeolus_stop(3, 9, True),
+#	aeolus_stop(3, 9, False),
+# Quint 2 2/3
+#	aeolus_stop(3, 7, True),
+#	aeolus_stop(3, 7, False),
+# Quint 5 1/3
+#	aeolus_stop(2, 4, True),
+#	aeolus_stop(2, 4, False),
+# Celesta 8'
+#	aeolus_stop(2, 7, True),
+#	aeolus_stop(2, 7, False),
+# Tibia 8'
+#	aeolus_stop(2, 6, True),
+#	aeolus_stop(2, 6, False),
