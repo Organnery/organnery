@@ -15,5 +15,5 @@ if ! lsblk | grep $MEDIA; then
 fi
 
 # mount the usb drive on top of default stops directory
-mount /dev/$MEDIA /home/$USERNAME/stops/ -o rw,sync,noatime,noiversion,norelatime
+mount /dev/$MEDIA /home/$USERNAME/stops/ -o rw,sync,noatime,noiversion,norelatime,umask=0000
 echo "mounted!"
