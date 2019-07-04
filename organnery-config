@@ -82,5 +82,5 @@ else
         echo "  disables Pisound card and enables onboard sound for the next session"
         echo ""
         echo "organnery-config pisound-enable"
-        echo "  enables PiSound card and disables onboard sound for the next session"
+        echo "  enables Pisound card and disables onboard sound for the next session"
 fi
