@@ -2,13 +2,14 @@
 
 USERNAME=user
 
-# copy stops
+# copy stops to the root filesystem
 cp -r /usr/share/organnery/data/stops /home/$USERNAME
-chown -R $USERNAME:$USERNAME /home/$USERNAME/stops
 
-# copy presets
-cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/.aeolus-presets
-chown $USERNAME:$USERNAME /home/$USERNAME/.aeolus-presets
+# copy presets to the root filesystem
+cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/stops/.aeolus-presets
+
+# fix permissions
+chown -R $USERNAME:$USERNAME /home/$USERNAME
 
 # start application on boot
 if [ ! -f /home/$USERNAME/.config/openbox/autostart.sh ] ; then
