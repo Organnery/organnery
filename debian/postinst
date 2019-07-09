@@ -2,18 +2,36 @@
 
 USERNAME=user
 
-# copy stops to the root filesystem
+# copy stops
 cp -r /usr/share/organnery/data/stops /home/$USERNAME
 
-# copy presets to the root filesystem
+# copy presets
 cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/stops/.aeolus-presets
+
+# copy openbox configuration file
+if [ ! -d /home/$USERNAME/.config/openbox ] ; then
+  mkdir -p /home/$USERNAME/.config/openbox
+  cp /usr/share/organnery/configs/openbox/rc.xml /home/$USERNAME/.config/openbox/
+fi
+
+# copy organnery theme for openbox
+if [ ! -d /home/$USERNAME/.themes/organnery ] ; then
+  mkdir -p /home/$USERNAME/.themes/organnery
+  cp /usr/share/organnery/configs/openbox/close.xbm /home/$USERNAME/.themes/organnery/
+  cp /usr/share/organnery/configs/openbox/themerc /home/$USERNAME/.themes/organnery/
+fi
+
+# copy organnery theme font
+if [ ! -d /home/$USERNAME/.fonts ] ; then
+  mkdir -p /home/$USERNAME/.fonts
+  cp /usr/share/organnery/configs/openbox/UnifrakturMaguntia21.ttf /home/$USERNAME/.fonts/
+fi
 
 # fix permissions
 chown -R $USERNAME:$USERNAME /home/$USERNAME
 
 # start application on boot
 if [ ! -f /home/$USERNAME/.config/openbox/autostart.sh ] ; then
-	mkdir -p /home/$USERNAME/.config/openbox
 cat << EOF > /home/$USERNAME/.config/openbox/autostart.sh
 #!/usr/bin/env bash
 /usr/share/organnery/organnery &

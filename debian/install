@@ -2,6 +2,7 @@ mididings-aeolus.py usr/share/organnery
 
 configs/ahlborn_hymnus.py usr/share/organnery/configs
 configs/passthru.py usr/share/organnery/configs
+configs/openbox usr/share/organnery/configs
 
 organnery usr/share/organnery
 organnery-config usr/bin
