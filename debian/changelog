@@ -1,3 +1,14 @@
+organnery (0.3) UNRELEASED; urgency=low
+
+  * Organnery theme for openbox
+  * Copy user files to blank USB sticks
+  * Support the internal soundcard option
+  * Reduce default period size when starting Aeolus
+  * Add configuration for Ahborn Hymnus
+  * Add public domain MIDI files for stress testing
+
+ -- Daniel James <daniel@64studio.com>  Wed, 10 Jul 2019 12:54:05 +0100
+
 organnery (0.2) UNRELEASED; urgency=low
 
   * Update default tuning and instrument preset files
