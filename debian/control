@@ -2,6 +2,7 @@ Source: organnery
 Priority: optional
 Section: sound
 Maintainer: Christopher Obbard <chris@64studio.com>
+Uploaders: Daniel James <daniel@64studio.com>
 Build-Depends: debhelper (>= 12), dh-systemd
 Standards-Version: 3.9.8
 
