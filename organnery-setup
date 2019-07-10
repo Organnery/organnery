@@ -30,8 +30,13 @@ if [ ! $(ls /home/$USERNAME/stops/*.ae0) ]; then
 	# copy stops and instrument definitions
 	cp -r /usr/share/organnery/data/stops/* /home/$USERNAME/stops/
 
-	# copy presets
+	# copy the matching presets, overwrite if necessary
 	cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/stops/.aeolus-presets
+
+        # copy default config to usb drive to make it user modifiable, if it doesn't exist
+        if [ ! -f /home/$USERNAME/stops/organnery.conf ] ; then
+          cp /etc/organnery/organnery.conf /home/$USERNAME/stops/organnery.conf
+        fi
 
 	# fix permissions
 	chown -R $USERNAME:$USERNAME /home/$USERNAME

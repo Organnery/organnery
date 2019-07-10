@@ -5,8 +5,13 @@ USERNAME=user
 # copy stops
 cp -r /usr/share/organnery/data/stops /home/$USERNAME
 
-# copy presets
+# copy the matching presets
 cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/stops/.aeolus-presets
+
+# copy default organnery config, if it doesn't exist
+if [ ! -f /home/$USERNAME/stops/organnery.conf ] ; then
+  cp /etc/organnery/organnery.conf /home/$USERNAME/stops/organnery.conf
+fi
 
 # check if openbox configuration directory exists
 if [ ! -d /home/$USERNAME/.config/openbox ] ; then
