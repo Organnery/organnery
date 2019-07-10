@@ -8,17 +8,21 @@ cp -r /usr/share/organnery/data/stops /home/$USERNAME
 # copy presets
 cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/stops/.aeolus-presets
 
-# copy openbox configuration file
+# check if openbox configuration directory exists
 if [ ! -d /home/$USERNAME/.config/openbox ] ; then
   mkdir -p /home/$USERNAME/.config/openbox
+fi
+
+# copy openbox configuration file
+if [ ! -f /home/$USERNAME/.config/openbox/rc.xml ] ; then
   cp /usr/share/organnery/configs/openbox/rc.xml /home/$USERNAME/.config/openbox/
 fi
 
 # copy organnery theme for openbox
-if [ ! -d /home/$USERNAME/.themes/organnery ] ; then
-  mkdir -p /home/$USERNAME/.themes/organnery
-  cp /usr/share/organnery/configs/openbox/close.xbm /home/$USERNAME/.themes/organnery/
-  cp /usr/share/organnery/configs/openbox/themerc /home/$USERNAME/.themes/organnery/
+if [ ! -d /home/$USERNAME/.themes/organnery/openbox-3 ] ; then
+  mkdir -p /home/$USERNAME/.themes/organnery/openbox-3
+  cp /usr/share/organnery/configs/openbox/close.xbm /home/$USERNAME/.themes/organnery/openbox-3/
+  cp /usr/share/organnery/configs/openbox/themerc /home/$USERNAME/.themes/organnery/openbox-3/
 fi
 
 # copy organnery theme font
