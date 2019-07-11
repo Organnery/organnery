@@ -52,13 +52,13 @@ elif [ "$1" = "overlayfs-enable" ]; then
 elif [ "$1" = "pisound-disable" ]; then
 
         mount_boot_rw
-        sudo sed -i "s;dtoverlay=pisound;dtparam=audio=on;g" /boot/cmdline.txt
+        sudo sed -i "s;dtoverlay=pisound;dtparam=audio=on;g" /boot/config.txt
         echo "pisound disabled, onboard sound enabled for the next session"
 
 elif [ "$1" = "pisound-enable" ]; then
 
         mount_boot_rw
-        sudo sed -i "s;dtparam=audio=on;dtoverlay=pisound;g" /boot/cmdline.txt
+        sudo sed -i "s;dtparam=audio=on;dtoverlay=pisound;g" /boot/config.txt
         echo "pisound enabled, onboard sound disabled for the next session"
 
 else
