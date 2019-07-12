@@ -49,4 +49,4 @@ done
 wait $AEOLUS_PID
 
 # restart script
-/usr/share/organnery/organnery
+exec $0
