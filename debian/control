@@ -15,8 +15,10 @@ Depends: ${misc:Depends},
  ${shlibs:Depends},
  aeolus,
  alsa-utils,
+ ambdec,
  cpufrequtils,
  gmidimonitor,
+ jackd2,
  mididings,
  python-pygame
 Description: Organnery
