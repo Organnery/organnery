@@ -86,7 +86,7 @@ rootFsType=`awk '$2 == "/" {print $3}' /etc/fstab`
 echo "check if we can locate the root device based on fstab"
 blkid $rootDev
 if [ $? -gt 0 ]; then
-    echo "no success, try if a filesystem with label 'rootfs' is avaialble"
+    echo "no success, try if a filesystem with label 'rootfs' is available"
     rootDevFstab=$rootDev
     rootDev=`blkid -L "rootfs"`
     if [ $? -gt 0 ]; then
