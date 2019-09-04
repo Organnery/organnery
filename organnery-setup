@@ -21,7 +21,7 @@ if ! lsblk | grep $MEDIA; then
 fi
 
 # mount the usb drive on top of default stops directory
-mount /dev/$MEDIA /home/$USERNAME/stops/ -o rw,sync,noatime,noiversion,norelatime,umask=0000
+mount /dev/$MEDIA /home/$USERNAME/stops/ -o rw,sync,noatime,noiversion,norelatime
 echo "mounted /dev/$MEDIA on /home/$USERNAME/stops/!"
 
 # if usb drive contains no instrument files, copy defaults to it
