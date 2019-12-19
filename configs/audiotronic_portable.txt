@@ -1,0 +1,38 @@
+--------------------------
+as configured for hauptwerk
+--------------------------
+
+TOP ROW channel 5
+stops pedal               stops manII                stops manI
+34 35 36 37 38 39 3A     3B 33 32 31 30 2F 2E      2D 2C 2B 2A 29 28 27 26 25 24
+
+MID ROW channel 3
+general pistons         man II thumb pistons
+2F 30 31 32 33 2B      2A 29 28 27 26 25        
+
+BOTTOM ROW channel 3
+couplers     manI thumb pistons     T  C
+2E 2D 2C     3B 3A 39 38 37 36     35 34
+
+PEDAL
+83.07.xx (Ch4 CC7)
+
+--------------------------
+as configured for aeolus
+--------------------------
+
+TOP ROW channel 5
+stops pedal               stops manII               stops manI
+34 35 36 37 38 39 3A     3B 33 32 31 30 2F 2E      2D 2C 2B 2A 29 28 27 26 25 24
+
+MID ROW channel 3
+transpose -2/0/+3       bank select
+2F 30 31 32 33 2B      2A 29 28 27 26 25        
+
+BOTTOM ROW channel 3
+couplers     preset select         T  C
+2E 2D 2C     3B 3A 39 38 37 36     35 34
+
+PEDAL
+- crescendo
+- swell ManII
