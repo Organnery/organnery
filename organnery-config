@@ -61,6 +61,16 @@ elif [ "$1" = "pisound-enable" ]; then
         sudo sed -i "s;dtparam=audio=on;dtoverlay=pisound;g" /boot/config.txt
         echo "pisound enabled, onboard sound disabled for the next session"
 
+elif [ "$1" = "cursor-disable" ]; then
+
+	sudo sed -i "s/^xserver-command=X -s 0 -dpms$/xserver-command=X -s 0 -dpms -nocursor/" /etc/lightdm/lightdm.conf
+	echo "mouse cursor disabled for the next session"
+
+elif [ "$1" = "cursor-enable" ]; then
+
+	sudo sed -i "s/^xserver-command=X -s 0 -dpms -nocursor/xserver-command=X -s 0 -dpms/" /etc/lightdm/lightdm.conf
+	echo "mouse cursor enabled for the next session"
+
 else
 	echo "ERROR: arguments not recognised!"
 	echo ""
@@ -77,10 +87,16 @@ else
 	echo ""
 	echo "organnery-config overlayfs-enable"
 	echo "	enables overlayfs for the next session"
-        echo ""
-        echo "organnery-config pisound-disable"
-        echo "  disables Pisound card and enables onboard sound for the next session"
-        echo ""
-        echo "organnery-config pisound-enable"
-        echo "  enables Pisound card and disables onboard sound for the next session"
+    echo ""
+    echo "organnery-config pisound-disable"
+    echo "  disables Pisound card and enables onboard sound for the next session"
+    echo ""
+    echo "organnery-config pisound-enable"
+    echo "  enables Pisound card and disables onboard sound for the next session"
+    echo ""
+    echo "organnery-config cursor-disable"
+    echo "  disables mouse cursor for the next session"
+    echo ""
+    echo "organnery-config cursor-enable"
+    echo "  enables mouse cursor for the next session"
 fi
