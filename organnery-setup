@@ -6,8 +6,8 @@ cpufreq-set -r -g performance
 
 # set output to 100% on analogue jack if onboard sound enabled
 if cat /boot/config.txt | grep -q dtparam=audio=on; then
-	amixer cset numid=1 100%
-	amixer cset numid=3 1
+    amixer cset numid=1 100%
+    amixer cset numid=3 1
 fi
 
 # simple automount script
@@ -16,8 +16,8 @@ USERNAME=user
 
 # quit if no usb drive detected
 if ! lsblk | grep $MEDIA; then
-	echo "usb not connected! quitting"
-	exit 0
+    echo "usb not connected! quitting"
+    exit 0
 fi
 
 # mount the usb drive on top of default stops directory
@@ -27,20 +27,20 @@ echo "mounted /dev/$MEDIA on /home/$USERNAME/stops/!"
 # if usb drive contains no instrument files, copy defaults to it
 if [ ! $(ls /home/$USERNAME/stops/*.ae0) ]; then
 
-	# copy stops and instrument definitions
-	cp -r /usr/share/organnery/data/stops/* /home/$USERNAME/stops/
+    # copy stops and instrument definitions
+    cp -r /usr/share/organnery/data/stops/* /home/$USERNAME/stops/
 
-	# copy the matching presets, overwrite if necessary
-	cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/stops/.aeolus-presets
+    # copy the matching presets, overwrite if necessary
+    cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/stops/.aeolus-presets
 
-        # copy default config to usb drive to make it user modifiable, if it doesn't exist
-        if [ ! -f /home/$USERNAME/stops/organnery.conf ] ; then
-          cp /etc/organnery/organnery.conf /home/$USERNAME/stops/organnery.conf
-        fi
+    # copy default config to usb drive to make it user modifiable, if it doesn't exist
+    if [ ! -f /home/$USERNAME/stops/organnery.conf ] ; then
+      cp /etc/organnery/organnery.conf /home/$USERNAME/stops/organnery.conf
+    fi
 
-	# fix permissions
-	chown -R $USERNAME:$USERNAME /home/$USERNAME
-	echo "copied instrument files to /dev/$MEDIA!"
+    # fix permissions
+    chown -R $USERNAME:$USERNAME /home/$USERNAME
+    echo "copied instrument files to /dev/$MEDIA!"
 
 else echo "existing instrument files found on /dev/$MEDIA!"
 
