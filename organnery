@@ -23,7 +23,7 @@ cards_in=$(aconnect -i | grep type=kernel,card | awk -F[\ ,:] '{print $2}')
 cards_out=$(aconnect -o | grep type=kernel,card | awk -F[\ ,:] '{print $2}')
 
 # start aeolus
-HOME=$HOME/stops aeolus -u -S stops -A -d $ALSA_DEVICE -r $SAMPLE_RATE -p $PERIOD_SIZE -n $NUMBER_OF_FRAGMENTS -I $INSTRUMENT_NAME -a $ASPECT_RATIO &
+HOME=$HOME/stops aeolus -S stops -A -d $ALSA_DEVICE -r $SAMPLE_RATE -p $PERIOD_SIZE -n $NUMBER_OF_FRAGMENTS -I $INSTRUMENT_NAME -a $ASPECT_RATIO &
 AEOLUS_PID=$!
 
 # start mididings input script
