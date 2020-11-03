@@ -1,3 +1,12 @@
+organnery (0.4) UNRELEASED; urgency=low
+
+  * add mouse cursor enable/disable to organnery-config
+  * fix code identation
+  * make vertical the default layout
+  * remove -u option on aeolus start
+
+ -- Raphaël Mouneyres <raphael@audiotronic.fr> Tue, 03 Nov 2020 09:24:03 +0100
+
 organnery (0.3) UNRELEASED; urgency=low
 
   * Organnery theme for openbox
