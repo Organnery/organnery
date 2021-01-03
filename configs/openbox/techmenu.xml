@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openbox_menu xmlns="http://openbox.org/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://openbox.org/
+                file:///usr/share/openbox/menu.xsd">
+
+<menu id="techmenu" label="Openbox 3">
+
+  <menu id="overlayfs" label="SDcard write protection">
+    <item label="set write only [secure]">
+      <action name="Execute">
+        <execute>organnery-config overlayfs-enable</execute>
+      </action>
+      <action name="Execute">
+        <prompt>pi needs to REBOOT to apply your change, are you sure you want to proceed ?</prompt>
+        <execute>sudo reboot</execute>
+      </action>
+    </item>
+    <item label="set read-write [less secure]">
+      <action name="Execute">
+        <execute>organnery-config overlayfs-disable</execute>
+      </action>
+      <action name="Execute">
+        <prompt>pi needs to REBOOT to apply your change, are you sure you want to proceed ?</prompt>
+        <execute>sudo reboot</execute>
+      </action>
+    </item>
+  </menu>
+
+  <menu id="soundcard" label="Choose soundcard">
+    <item label="empty">
+      <action name="Execute">
+        <execute>ls</execute>
+      </action>
+    </item>
+  </menu>
+
+  <menu id="mouse-cursor" label="mouse cursor">
+    <item label="mouse cursor enable">
+      <action name="Execute">
+        <execute>organnery-config cursor-enable</execute>
+      </action>
+      <action name="Execute">
+        <prompt>pi will quickly REBOOT to apply your change, are you sure you want to proceed now ? 
+		ANY UNSAVED SETTINGS WILL BE LOST !!</prompt>
+        <execute>sudo systemctl restart display-manager</execute>
+      </action>
+    </item>
+    <item label="mouse cursor disable">
+      <action name="Execute">
+        <execute>organnery-config cursor-disable</execute>
+      </action>
+      <action name="Execute">
+        <prompt>pi will quickly REBOOT to apply your change, are you sure you want to proceed now ? 
+		ANY UNSAVED SETTINGS WILL BE LOST !!</prompt>
+        <execute>sudo systemctl restart display-manager</execute>
+      </action>
+    </item>
+  </menu>
+
+  <item label="Show Terminal">
+    <action name="Execute"><execute>x-terminal-emulator</execute></action>
+  </item>
+
+</menu>
+
+</openbox_menu>
+
+
+
+
+
+
+
+
+
+
+

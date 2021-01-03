@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openbox_menu xmlns="http://openbox.org/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://openbox.org/
+                file:///usr/share/openbox/menu.xsd">
+
+<menu id="organmenu" label="Openbox 3">
+
+  <item label="START new recording">
+    <action name="Execute">
+      <execute>/home/user/midirecstart.sh</execute>
+    </action>
+  </item>
+  <item label="STOP current recording">
+    <action name="Execute">
+      <execute>/home/user/midirecstop.sh</execute>
+    </action>
+  </item>
+
+  <separator />
+
+  <menu id="your_midi_recordings" label="Your midi recordings" execute="perl /home/user/midireclist.pl"/>
+  <menu id="midi_demos" label="Midi Demos" execute="perl /home/user/midiplaydemo.pl"/>
+  <item label="STOP currently playing">
+    <action name="Execute">
+      <prompt>WARNING : You have to press "Midi Out" button on GUI to stop hanging notes. Do you want to stop playing now ?</prompt>
+      <execute>/home/user/midiplaystop.sh</execute>
+    </action>
+  </item>
+
+  <separator />
+
+  <menu id="organs_list" label="Organs" execute="perl /home/user/organlist.pl"/>
+
+</menu>
+
+</openbox_menu>
