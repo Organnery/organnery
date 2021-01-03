@@ -1,49 +1,113 @@
 #!/usr/bin/env bash
 
+echo `date` >> $HOME/organnery.log
+
 # load default configuration file & attempt to load user configuration file from USB
 source /etc/organnery/organnery.conf
 if [ -f $HOME/stops/organnery.conf ]; then
+        echo "using organnery.conf from home//usb" >> $HOME/organnery.log
 	source $HOME/stops/organnery.conf
 fi
 
-# set a sane default
+# log options
+echo "--options :" >> $HOME/organnery.log
+echo ALSA Device       : $ALSA_DEVICE >> $HOME/organnery.log
+echo ALSA Sample rate  : $SAMPLE_RATE >> $HOME/organnery.log
+echo ALSA Period size  : $PERIOD_SIZE >> $HOME/organnery.log
+echo ALSA Nb fragments : $NUMBER_OF_FRAGMENTS >> $HOME/organnery.log
+echo INSTRUMENT name   : $INSTRUMENT_NAME >> $HOME/organnery.log
+echo AELOUS GUI Aspect ratio     : $ASPECT_RATIO >> $HOME/organnery.log
+echo AEOLUS Main window scaling  : $AEOLUS_MAIN_WINDOW_SCALING >> $HOME/organnery.log
+echo AEOLUS Audio window scaling : $AEOLUS_AUDIO_WINDOW_SCALING >> $HOME/organnery.log
+echo AEOLUS Midi window scaling  : $AEOLUS_MIDI_WINDOW_SCALING >> $HOME/organnery.log
+echo AEOLUS Instr window scaling : $AEOLUS_INSTR_WINDOW_SCALING >> $HOME/organnery.log
+echo AEOLUS Edit window scaling  : $AEOLUS_EDIT_WINDOW_SCALING >> $HOME/organnery.log
+echo AEOLUS connect output       : $AEOLUS_CONNECT_MIDI_OUT >> $HOME/organnery.log
+echo MIDI REC format : $MIDI_REC_FORMAT >> $HOME/organnery.log
+echo MIDI REC folder : $MIDI_REC_FOLDER >> $HOME/organnery.log
+echo MIDI REC source : $MIDI_REC_SOURCE >> $HOME/organnery.log
+echo AUDIO REC maximum record time : $AUDIO_REC_MAXTIME >> $HOME/organnery.log
+echo AUDIO REC folder : $AUDIO_REC_FOLDER >> $HOME/organnery.log
+echo AUDIO REC source : $AUDIO_REC_SOURCE >> $HOME/organnery.log
+
+# set a sane mididings default
 if [ ! -f "$ORGANNERY_MIDIDINGS_SCRIPT" ]; then
 	ORGANNERY_MIDIDINGS_SCRIPT="/usr/share/organnery/configs/passthru.py"
 fi
 
 # disconnect all midi connections
+echo disconnect all midi connections >> $HOME/organnery.log
 aconnect -x
 
 # kill previous incarnation of software
+echo kill previous incarnation of software >> $HOME/organnery.log
 killall --wait aeolus
 killall --wait mididings
 
 # find hardware midi ports
 cards_in=$(aconnect -i | grep type=kernel,card | awk -F[\ ,:] '{print $2}')
 cards_out=$(aconnect -o | grep type=kernel,card | awk -F[\ ,:] '{print $2}')
+echo --hardware ports in : $cards_in >> $HOME/organnery.log
+echo --hardware ports out : $cards_out >> $HOME/organnery.log
 
 # start aeolus
+echo starting aeolus >> $HOME/organnery.log
 HOME=$HOME/stops aeolus -S stops -A -d $ALSA_DEVICE -r $SAMPLE_RATE -p $PERIOD_SIZE -n $NUMBER_OF_FRAGMENTS -I $INSTRUMENT_NAME -a $ASPECT_RATIO &
 AEOLUS_PID=$!
 
 # start mididings input script
+echo starting mididings input script >> $HOME/organnery.log
 mididings -f "$ORGANNERY_MIDIDINGS_SCRIPT" &
 
-# todo: wait for mididings & aeolus midi ports to come up
-sleep 2
+# wait for aeolus midi ports to come up
+echo "--aeolus midi port:" >> $HOME/organnery.log
+port_aeolus=$(aconnect -o | grep aeolus | awk -F[\ ,:] '{print $2}')
+while [ -z $port_aeolus ]
+do
+  echo "waiting for aeolus midi port" >> $HOME/organnery.log
+  sleep 1
+  port_aeolus=$(aconnect -o | grep aeolus | awk -F[\ ,:] '{print $2}')
+done
+echo aeolus alsa midi port : $port_aeolus >> $HOME/organnery.log
+
+# wait for mididings midi ports to come up
+echo "--mididings midi port:" >> $HOME/organnery.log
+port_mididings=$(aconnect -o | grep mididings | awk -F[\ ,:] '{print $2}')
+while [ -z $port_mididings ]
+do
+  echo "waiting for mididings midi port" >> $HOME/organnery.log
+  sleep 1
+  port_mididings=$(aconnect -o | grep mididings | awk -F[\ ,:] '{print $2}')
+done
+echo mididings alsa midi port $port_mididings >> $HOME/organnery.log
 
 # connect each hardware midi input to mididings input
+echo "--connecting hardware midi inputs:" >> $HOME/organnery.log
 for card_out in $cards_out; do
-	aconnect "$card_out" mididings:0
+        echo $card_out to mididings >> $HOME/organnery.log
+	aconnect "$card_out" $port_mididings:0
 done
 
 # connect mididings out to aeolus in
-aconnect mididings:1 aeolus:In
+echo "--connecting mididings out to aeolus in" >> $HOME/organnery.log
+aconnect $port_mididings:1 $port_aeolus:In
 
 # connect aeolus out to each midi hardware output
-for card_in in $cards_in; do
-	aconnect aeolus:1 "$card_in"
-done
+if [ $AEOLUS_CONNECT_MIDI_OUT = 1 ]
+then
+  echo "--Connecting aeolus midi outputs to hardware:" >> $HOME/organnery.log
+  for card_in in $cards_in; do
+        echo aeolus to $card_in >> $HOME/organnery.log
+	aconnect "$port_aeolus":1 "$card_in"
+  done
+else
+  echo "NOT connecting aeolus midi outputs" >> $HOME/organnery.log
+fi
+
+# ready
+echo "--" >> $HOME/organnery.log
+
+echo READY TO PLAY >> $HOME/organnery.log
 
 # wait for aeolus to quit
 wait $AEOLUS_PID
