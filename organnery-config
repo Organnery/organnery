@@ -71,6 +71,19 @@ elif [ "$1" = "cursor-enable" ]; then
 	sudo sed -i "s/^xserver-command=X -s 0 -dpms -nocursor/xserver-command=X -s 0 -dpms/" /etc/lightdm/lightdm.conf
 	echo "mouse cursor enabled for the next session"
 
+elif [ "$1" = "organ-set" ]; then
+
+	source $HOME/stops/organnery.conf
+	sudo sed -i "s/^INSTRUMENT_NAME=\"$INSTRUMENT_NAME\"/INSTRUMENT_NAME=\"$2\"/" $HOME/stops/organnery.conf
+	echo "Set new active organ to $2 for next reboot"
+
+elif [ "$1" = "organ-switch" ]; then
+
+	source $HOME/stops/organnery.conf
+	sudo sed -i "s/^INSTRUMENT_NAME=\"$INSTRUMENT_NAME\"/INSTRUMENT_NAME=\"$2\"/" $HOME/stops/organnery.conf
+	killall aeolus
+	echo "Switching to new organ $2 now, and set it for next reboot"
+
 else
 	echo "ERROR: arguments not recognised!"
 	echo ""
@@ -99,4 +112,10 @@ else
     echo ""
     echo "organnery-config cursor-enable"
     echo "  enables mouse cursor for the next session"
+    echo ""
+    echo "organnery-config organ-set XXX"
+    echo "  set XXX as new organ on next reboot"
+    echo ""
+    echo "organnery-config organ-switch XXX"
+    echo "  switch to XXX organ now and save as default"
 fi
