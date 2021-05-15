@@ -11,6 +11,7 @@ sub menu;
 
 # base dir without trailing slash
 my $dir = "/home/user/stops/midi_recordings";
+# TODO FIX we should get the ENV variable for exact folder
 
 ##################################################################################################
 
@@ -69,7 +70,7 @@ sub item {
   say "  <item label=\"$file\">";
   say "    <action name=\"Execute\">";
   say "      <execute>";
-  say "        /home/user/midiplaystart.sh $dir"."/"."$file";
+  say "        /usr/share/organnery/scripts/midiplaystart.sh $dir"."/"."$file";
   say "      </execute>";
   say "    </action>";
   say "  </item>";

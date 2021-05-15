@@ -69,7 +69,7 @@ sub item {
   say "  <item label=\"$file\">";
   say "    <action name=\"Execute\">";
   say "      <execute>";
-  say "        /home/user/midiplaystart.sh $dir"."/"."$file";
+  say "        /usr/share/organnery/scripts/midiplaystart.sh $dir"."/"."$file";
   say "      </execute>";
   say "    </action>";
   say "  </item>";
