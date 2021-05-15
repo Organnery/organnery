@@ -1,0 +1,154 @@
+# Aeolus instrument definition file
+# Created by Aeolus-0.9.10 at Mon Nov 23 09:12:34 2020
+
+
+/instr/new
+/tuning 440.0 5
+
+# Keyboards
+#
+/manual/new   III
+/manual/new   II
+/manual/new   I
+/pedal/new    P
+
+# Divisions
+#
+/divis/new    III      1  1
+/rank         C  17  kPrincipal8b.ae0
+/rank         W  20  kOpenFlute8.ae0
+/rank         R  17  kViole8.ae0
+/rank         L  26  kCeleste8.ae0
+/rank         R  21  kFlute4.ae0
+/rank         R  30  kPrincipal4a.ae0
+/rank         C  20  kMixture223fra.ae0
+/rank         L  31  kTrompette16fra.ae0
+/rank         R  23  kccRecTrompette8.ae0
+/rank         L  13  kClarion4fra.ae0
+/rank         R  27  kHautbois8.ae0
+/swell
+/tremul       4.9  0.3
+/divis/end
+
+/divis/new    II       2  2
+/rank         L  23  kBourdon8b.ae0
+/rank         C  21  kDulciana8.ae0
+/rank         R  19  kRohrflute4.ae0
+/rank         C  25  kPrincipal4b.ae0
+/rank         L  23  kNasard223.ae0
+/rank         R  24  kFlute2.ae0
+/rank         L  26  kTierce135.ae0
+/rank         R  30  kLarigot113.ae0
+/rank         R  22  kCymbelIII.ae0
+/rank         W  24  kCromorne8.ae0
+/rank         L  18  kTrompette8frb.ae0
+/swell
+/tremul       4.8  0.2
+/divis/end
+
+/divis/new    I        3  3
+/rank         C  10  kBourdon16.ae0
+/rank         C  21  kOpenDiapason8.ae0
+/rank         L  16  kGedeckt8.ae0
+/rank         R  19  kGamba8.ae0
+/rank         R  14  kHarmonicFlute8.ae0
+/rank         C  16  kPrincipal4.ae0
+/rank         L  14  kOpenFlute4.ae0
+/rank         C  13  kTwelfth223.ae0
+/rank         C   4  kFifteenth2.ae0
+/rank         C   1  kMixtureIV.ae0
+/rank         R  10  kCornet_II-V.ae0
+/rank         W  15  kDblTrump16.ae0
+/rank         L  18  kTrumpet8.ae0
+/rank         R  10  kClarion4eng.ae0
+/divis/end
+
+/divis/new    P        4  4
+/rank         C  20  kDblOpenWood32.ae0
+/rank         C  28  kOpenWood16.ae0
+/rank         R  17  kPedBourdon16.ae0
+/rank         C  21  kPrincipal16.ae0
+/rank         L  10  kPedPrincipal8.ae0
+/rank         R  15  kPommer8.ae0
+/rank         L  22  kPedChoralflute4.ae0
+/rank         R  26  kPedPrincipal4.ae0
+/rank         C  18  kPedMixture223.ae0
+/rank         C  30  kContraFagotto32.ae0
+/rank         W  10  kPosaune16.ae0
+/rank         W  15  kPedTrumpet8.ae0
+/rank         L   5  kClarion4.ae0
+/divis/end
+
+# Interface groups
+#
+/group/new    III    
+/stop         0   1   1
+/stop         0   1   2
+/stop         0   1   3
+/stop         0   1   4
+/stop         0   1   5
+/stop         0   1   6
+/stop         0   1   7
+/stop         0   1   8
+/stop         0   1   9
+/stop         0   1  10
+/stop         0   1  11
+/tremul       1       TR       Tremulant
+/group/end
+
+/group/new    II     
+/stop         0   2   1
+/stop         0   2   2
+/stop         0   2   3
+/stop         0   2   4
+/stop         0   2   5
+/stop         0   2   6
+/stop         0   2   7
+/stop         0   2   8
+/stop         0   2   9
+/stop         0   2  10
+/stop         0   2  11
+/tremul       2       TR       Tremulant
+/coupler      2   1   C2+3     II+III
+/group/end
+
+/group/new    I      
+/stop         0   3   1
+/stop         0   3   2
+/stop         0   3   3
+/stop         0   3   4
+/stop         0   3   5
+/stop         0   3   6
+/stop         0   3   7
+/stop         0   3   8
+/stop         0   3   9
+/stop         0   3  10
+/stop         0   3  11
+/stop         0   3  12
+/stop         0   3  13
+/stop         0   3  14
+/coupler      3   2   C1+2     I+II
+/coupler      3   1   C1+3     I+III
+/group/end
+
+/group/new    P      
+/stop         0   4   1
+/stop         0   4   2
+/stop         0   4   3
+/stop         0   4   4
+/stop         0   4   5
+/stop         0   4   6
+/stop         0   4   7
+/stop         0   4   8
+/stop         0   4   9
+/stop         0   4  10
+/stop         0   4  11
+/stop         0   4  12
+/stop         0   4  13
+/coupler      4   3   CP+1     P+I
+/coupler      4   2   CP+2     P+II
+/coupler      4   1   CP+3     P+III
+/group/end
+
+
+/instr/end
