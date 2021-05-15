@@ -16,29 +16,29 @@ if [ "$1" = "mount-boot" ]; then
 
 	# mount boot partition RW
 	mount_boot_rw
-	echo "boot partition now mounted rw"
+	echo "boot partition now mounted rw" >> /home/user/organnery.log
 
 elif [ "$1" = "overlayfs-check" ]; then
 
 	# check whether overlayfs is enabled for the current boot
 	if grep -q "$OVERLAYFS_CMDLINE" /proc/cmdline; then
-		echo "overlayfs is enabled for current session"
+		echo "overlayfs is enabled for current session" >> /home/user/organnery.log
 	else
-		echo "overlayfs is disabled for current session"
+		echo "overlayfs is disabled for current session" >> /home/user/organnery.log
 	fi
 
 	# check whether overlayfs is enabled for the next boot
 	if grep -q "$OVERLAYFS_CMDLINE" /boot/cmdline.txt; then
-		echo "overlayfs is enabled for the next session"
+		echo "overlayfs is enabled for the next session" >> /home/user/organnery.log
 	else
-		echo "overlayfs is disabled for the next session"
+		echo "overlayfs is disabled for the next session" >> /home/user/organnery.log
 	fi
 
 elif [ "$1" = "overlayfs-disable" ]; then
 
 	mount_boot_rw
 	sudo sed -i "s; $OVERLAYFS_CMDLINE;;g" /boot/cmdline.txt
-	echo "overlayfs disabled for the next session"
+	echo "overlayfs disabled for the next session" >> /home/user/organnery.log
 
 elif [ "$1" = "overlayfs-enable" ]; then
 
@@ -47,45 +47,58 @@ elif [ "$1" = "overlayfs-enable" ]; then
 		CMDLINE=`cat /boot/cmdline.txt`
 		echo "$CMDLINE $OVERLAYFS_CMDLINE" | sudo tee /boot/cmdline.txt > /dev/null
 	fi
-	echo "overlayfs enabled for the next session"
+	echo "overlayfs enabled for the next session" >> /home/user/organnery.log
 
 elif [ "$1" = "pisound-disable" ]; then
 
+		# update boot
         mount_boot_rw
         sudo sed -i "s;dtoverlay=pisound;dtparam=audio=on;g" /boot/config.txt
-        echo "pisound disabled, onboard sound enabled for the next session"
+
+        # update alsa config
+        sudo sed -i "s/^PERIOD_SIZE=\"128\"/PERIOD_SIZE=\"1024\"/" $HOME/stops/organnery.conf
+
+        echo "pisound disabled, onboard sound enabled for the next session" >> /home/user/organnery.log
+        sudo reboot
 
 elif [ "$1" = "pisound-enable" ]; then
 
+		# update boot
         mount_boot_rw
         sudo sed -i "s;dtparam=audio=on;dtoverlay=pisound;g" /boot/config.txt
-        echo "pisound enabled, onboard sound disabled for the next session"
 
+        # update alsa config
+        sudo sed -i "s/^PERIOD_SIZE=\"1024\"/PERIOD_SIZE=\"128\"/" $HOME/stops/organnery.conf
+
+        echo "pisound enabled, onboard sound disabled for the next session" >> /home/user/organnery.log
+        sudo reboot
+        
 elif [ "$1" = "cursor-disable" ]; then
 
 	sudo sed -i "s/^xserver-command=X -s 0 -dpms$/xserver-command=X -s 0 -dpms -nocursor/" /etc/lightdm/lightdm.conf
-	echo "mouse cursor disabled for the next session"
+	echo "mouse cursor disabled for the next session" >> /home/user/organnery.log
 
 elif [ "$1" = "cursor-enable" ]; then
 
 	sudo sed -i "s/^xserver-command=X -s 0 -dpms -nocursor/xserver-command=X -s 0 -dpms/" /etc/lightdm/lightdm.conf
-	echo "mouse cursor enabled for the next session"
+	echo "mouse cursor enabled for the next session" >> /home/user/organnery.log
 
 elif [ "$1" = "organ-set" ]; then
 
 	source $HOME/stops/organnery.conf
 	sudo sed -i "s/^INSTRUMENT_NAME=\"$INSTRUMENT_NAME\"/INSTRUMENT_NAME=\"$2\"/" $HOME/stops/organnery.conf
-	echo "Set new active organ to $2 for next reboot"
+	echo "Set new active organ to $2 for next reboot" >> /home/user/organnery.log
 
 elif [ "$1" = "organ-switch" ]; then
 
 	source $HOME/stops/organnery.conf
 	sudo sed -i "s/^INSTRUMENT_NAME=\"$INSTRUMENT_NAME\"/INSTRUMENT_NAME=\"$2\"/" $HOME/stops/organnery.conf
 	killall aeolus
-	echo "Switching to new organ $2 now, and set it for next reboot"
+	echo "Switching to new organ $2 now, and set it for next reboot" >> /home/user/organnery.log
 
 else
-	echo "ERROR: arguments not recognised!"
+	echo "ERROR: organnery-config arguments not recognised!" >> /home/user/organnery.log
+	echo "ERROR: organnery-config arguments not recognised!"
 	echo ""
 	echo "usage:"
 

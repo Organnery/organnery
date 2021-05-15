@@ -29,9 +29,18 @@
   </menu>
 
   <menu id="soundcard" label="Choose soundcard">
-    <item label="empty">
+    <item label="Use Pi onboard soundcard">
       <action name="Execute">
-        <execute>ls</execute>
+        <prompt>pi needs to REBOOT to apply your change, are you sure you want to proceed ?
+        ANY UNSAVED SETTINGS WILL BE LOST !!</prompt>
+        <execute>organnery-config pisound-disable</execute>
+      </action>
+    </item>
+    <item label="Use PiSound hat soundcard">
+      <action name="Execute">
+        <prompt>pi needs to REBOOT to apply your change, are you sure you want to proceed ?
+        ANY UNSAVED SETTINGS WILL BE LOST !!</prompt>
+        <execute>organnery-config pisound-enable</execute>
       </action>
     </item>
   </menu>
