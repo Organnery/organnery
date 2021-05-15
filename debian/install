@@ -17,3 +17,4 @@ overlayRoot.sh usr/share/organnery
 
 data usr/share/organnery
 img usr/share/organnery
+scripts /usr/share/organnery

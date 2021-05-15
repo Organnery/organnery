@@ -36,6 +36,13 @@ if [ ! -d /home/$USERNAME/.fonts ] ; then
   cp /usr/share/organnery/configs/openbox/UnifrakturMaguntia21.ttf /home/$USERNAME/.fonts/
 fi
 
+# copy menu item
+if [ ! -f /home/$USERNAME/.config/openbox/menu.xml ] ; then
+  cp /usr/share/organnery/configs/openbox/menu.xml /home/$USERNAME/.config/openbox/
+  cp /usr/share/organnery/configs/openbox/organmenu.xml /home/$USERNAME/.config/openbox/
+  cp /usr/share/organnery/configs/openbox/techmenu.xml /home/$USERNAME/.config/openbox/
+fi
+
 # fix permissions
 chown -R $USERNAME:$USERNAME /home/$USERNAME
 
