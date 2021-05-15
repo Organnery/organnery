@@ -50,6 +50,8 @@ chown -R $USERNAME:$USERNAME /home/$USERNAME
 if [ ! -f /home/$USERNAME/.config/openbox/autostart.sh ] ; then
 cat << EOF > /home/$USERNAME/.config/openbox/autostart.sh
 #!/usr/bin/env bash
+#eval `cat $HOME/.fehbg` &
+feh --bg-scale '/usr/share/organnery/img/splash.png' &
 /usr/share/organnery/organnery &
 EOF
 	chmod +x /home/$USERNAME/.config/openbox/autostart.sh
