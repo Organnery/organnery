@@ -31,7 +31,7 @@
 
   <separator />
 
-  <menu id="organs_list" label="Organs" execute="perl /usr/share/organnery/scripts/organlist.pl"/>
+  <menu id="organs_list" label="Organs" execute="perl /usr/share/organnery/scripts/menu_organ_actions.pl"/>
 
 </menu>
 
