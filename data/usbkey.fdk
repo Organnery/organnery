@@ -1,0 +1,7 @@
+label: aeolus
+label-id: 0xf0d16a22
+device: /dev/sda
+unit: sectors
+
+start=        2048, size=409600, type=83
+start=      411648, size=     +, type=c

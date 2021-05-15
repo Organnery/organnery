@@ -68,6 +68,15 @@
     </item>
   </menu>
 
+  <menu id="usbkey" label="USB key">
+    <item label="Format and copy default organs">
+      <action name="Execute">
+        <prompt>ALL DATA ON THE KEY WILL BE LOST !!, are you sure you want to proceed ?</prompt>
+        <execute>organnery-config format-usb</execute>
+      </action>
+    </item>
+  </menu>
+
   <item label="Show Terminal">
     <action name="Execute"><execute>x-terminal-emulator</execute></action>
   </item>
