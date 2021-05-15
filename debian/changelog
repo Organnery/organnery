@@ -1,11 +1,18 @@
 organnery (0.4) UNRELEASED; urgency=low
 
-  * add mouse cursor enable/disable to organnery-config
+  * #30 organnery-config option for visibility of mouse cursor
   * fix code identation
   * make vertical the default layout
   * remove -u option on aeolus start
+  * #37 organnery-config option for change soundcard
+  * #35 add keyboard shortcuts
+  * #34 organnery-config option for organ change
+  * #33 record/playback midi performances
+  * #32 add organnery-config dhcp/static
+  * #23 initialize usb stick
+  * #22 log to file instead of echo to console
 
- -- Raphaël Mouneyres <raphael@audiotronic.fr> Tue, 03 Nov 2020 09:24:03 +0100
+ -- Raphaël Mouneyres <raphael@audiotronic.fr> Sat, 15 May 2021 09:24:03 +0100
 
 organnery (0.3) UNRELEASED; urgency=low
 
