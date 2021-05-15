@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "organnery-setup"
+echo "organnery-setup" >> $HOME/organnery.log
 
 # set cpu governor to performance
 cpufreq-set -r -g performance
@@ -16,13 +16,13 @@ USERNAME=user
 
 # quit if no usb drive detected
 if ! lsblk | grep $MEDIA; then
-    echo "usb not connected! quitting"
+    echo "usb not connected! quitting" >> $HOME/organnery.log
     exit 0
 fi
 
 # mount the usb drive on top of default stops directory
 mount /dev/$MEDIA /home/$USERNAME/stops/ -o rw,sync,noatime,noiversion,norelatime
-echo "mounted /dev/$MEDIA on /home/$USERNAME/stops/!"
+echo "mounted /dev/$MEDIA on /home/$USERNAME/stops/!" >> $HOME/organnery.log
 
 # if usb drive contains no instrument files, copy defaults to it
 if [ ! $(ls /home/$USERNAME/stops/*.ae0) ]; then
@@ -40,8 +40,8 @@ if [ ! $(ls /home/$USERNAME/stops/*.ae0) ]; then
 
     # fix permissions
     chown -R $USERNAME:$USERNAME /home/$USERNAME
-    echo "copied instrument files to /dev/$MEDIA!"
+    echo "copied instrument files to /dev/$MEDIA!" >> $HOME/organnery.log
 
-else echo "existing instrument files found on /dev/$MEDIA!"
+else echo "existing instrument files found on /dev/$MEDIA!" >> $HOME/organnery.log
 
 fi
