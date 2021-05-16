@@ -96,7 +96,7 @@ elif [ "$1" = "organ-switch" ]; then
 	killall aeolus
 	echo "Switching to new organ $2 now, and set it for next reboot" >> /home/user/organnery.log
 
-elif [ "$1" = "format-usb" ]; then
+elif [ "$1" = "init-usb" ]; then
 
 	echo "Format and fillup usb key with default data" >> /home/user/organnery.log
 	# unmount partition
@@ -104,12 +104,12 @@ elif [ "$1" = "format-usb" ]; then
 	# delete partition table
 	sudo dd if=/dev/zero of=/dev/sda bs=512 count=1 conv=notrunc
 	# create partitions from template
-	sudo sfdisk /dev/sda < /usr/share/organnery/data/usbkey.fdk
+	sudo /sbin/sfdisk /dev/sda < /usr/share/organnery/data/usbkey.fdk
 	# format partitions
-	sudo mkfs.ext4 -n ORGAN /dev/sda1
-	sudo mkfs.vfat -F 32 -n USERDATA /dev/sda2
+	sudo /sbin/mkfs.ext4 -F -L ORGAN /dev/sda1
+	sudo /sbin/mkfs.vfat -F 32 -n DATA /dev/sda2
 	# copy data
-	organnery-setup
+	sudo /usr/share/organnery/organnery-setup
 	echo "END usb key format" >> /home/user/organnery.log
 
 else
@@ -148,6 +148,6 @@ else
     echo "organnery-config organ-switch XXX"
     echo "  switch to XXX organ now and save as default"
     echo ""
-    echo "organnery-config format-usb"
-    echo "  format usb key (sda) for optimal organnery"
+    echo "organnery-config init-usb"
+    echo "  format usb key (sda) and copy organ data for optimal organnery setup"
 fi

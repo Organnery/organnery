@@ -25,7 +25,7 @@ mount /dev/$MEDIA /home/$USERNAME/stops/ -o rw,sync,noatime,noiversion,norelatim
 echo "mounted /dev/$MEDIA on /home/$USERNAME/stops/!" >> $HOME/organnery.log
 
 # if usb drive contains no instrument files, copy defaults to it
-if [ ! $(ls /home/$USERNAME/stops/*.ae0) ]; then
+if [[ ! $(ls /home/$USERNAME/stops/*.ae0) ]]; then
 
     # copy stops and instrument definitions
     cp -r /usr/share/organnery/data/stops/* /home/$USERNAME/stops/
