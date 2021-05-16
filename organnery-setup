@@ -34,6 +34,7 @@ if [[ ! $(ls /home/$USERNAME/stops/*.ae0) ]]; then
 
     # copy the matching presets, overwrite if necessary
     cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/stops/.aeolus-presets
+    cp /usr/share/organnery/data/file.aeolus-aparams /home/$USERNAME/stops/.aeolus-aparams
 
     # copy default config to usb drive to make it user modifiable, if it doesn't exist
     if [ ! -f /home/$USERNAME/stops/organnery.conf ] ; then
