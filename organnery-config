@@ -119,12 +119,14 @@ elif [ "$1" = "ip" ]; then
 		# disable static ip lines if not already commented out
 		sudo sed -i 's/^[^#].*address.*/#&/' /etc/network/interfaces
 		sudo sed -i 's/^[^#].*gateway.*/#&/' /etc/network/interfaces
+		sudo /sbin/reboot
 	elif [ "$2" = "default" ]; then
 		# enable static
 		sudo sed -i "s/iface eth0 inet dhcp/iface eth0 inet static/" /etc/network/interfaces
 		# set default fixed ip
 		sudo sed -i 's/#\{0,1\}.*address.*/ address 192.168.0.100//' /etc/network/interfaces
 		sudo sed -i 's/#\{0,1\}.*gateway.*/ gateway 192.168.0.1/' /etc/network/interfaces
+		sudo /sbin/reboot
 	elif [[ $2 =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
 		if [[ $3 =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
 			# enable static
@@ -132,6 +134,7 @@ elif [ "$1" = "ip" ]; then
 			# set manual fixed ip
 			sudo sed -i 's/#\{0,1\}.*address.*/ address $2/' /etc/network/interfaces
 			sudo sed -i 's/#\{0,1\}.*gateway.*/ gateway $3/' /etc/network/interfaces
+			sudo /sbin/reboot
 		else
 			echo "ERROR: organnery-config IP argument $3 is not a valid gateway address!" >> /home/user/organnery.log
 	else
