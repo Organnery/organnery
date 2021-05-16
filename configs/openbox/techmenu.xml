@@ -7,7 +7,39 @@
 
 <menu id="techmenu" label="Openbox 3">
 
-  <menu id="overlayfs" label="SDcard write protection">
+  <menu id="soundcard" label="Choose soundcard (reboot)">
+    <item label="Use Pi onboard soundcard">
+      <action name="Execute">
+        <prompt>pi needs to REBOOT to apply your change, are you sure you want to proceed ?
+        ANY UNSAVED SETTINGS WILL BE LOST !!</prompt>
+        <execute>organnery-config pisound-disable</execute>
+      </action>
+    </item>
+    <item label="Use PiSound hat soundcard">
+      <action name="Execute">
+        <prompt>pi needs to REBOOT to apply your change, are you sure you want to proceed ?
+        ANY UNSAVED SETTINGS WILL BE LOST !!</prompt>
+        <execute>organnery-config pisound-enable</execute>
+      </action>
+    </item>
+  </menu>
+
+  <menu id="usbkey" label="USB key">
+    <item label="Format and copy default organs (reboot)">
+      <action name="Execute">
+        <prompt>ALL DATA ON THE KEY WILL BE LOST !!, are you sure you want to proceed ?</prompt>
+        <execute></execute>
+      </action>
+      <action name="Execute">
+        <prompt>Organnery will reboot after usb key format, are you sure you want to proceed ?</prompt>
+        <execute>organnery-config init-usb</execute>
+      </action>
+    </item>
+  </menu>
+
+  <separator />
+
+  <menu id="overlayfs" label="SDcard write protection (reboot)">
     <item label="set write only [secure]">
       <action name="Execute">
         <execute>organnery-config overlayfs-enable</execute>
@@ -28,32 +60,16 @@
     </item>
   </menu>
 
-  <menu id="soundcard" label="Choose soundcard">
-    <item label="Use Pi onboard soundcard">
-      <action name="Execute">
-        <prompt>pi needs to REBOOT to apply your change, are you sure you want to proceed ?
-        ANY UNSAVED SETTINGS WILL BE LOST !!</prompt>
-        <execute>organnery-config pisound-disable</execute>
-      </action>
-    </item>
-    <item label="Use PiSound hat soundcard">
-      <action name="Execute">
-        <prompt>pi needs to REBOOT to apply your change, are you sure you want to proceed ?
-        ANY UNSAVED SETTINGS WILL BE LOST !!</prompt>
-        <execute>organnery-config pisound-enable</execute>
-      </action>
-    </item>
-  </menu>
-
   <menu id="mouse-cursor" label="mouse cursor">
     <item label="mouse cursor enable">
       <action name="Execute">
         <execute>organnery-config cursor-enable</execute>
       </action>
       <action name="Execute">
-        <prompt>pi will quickly REBOOT to apply your change, are you sure you want to proceed now ? 
-		ANY UNSAVED SETTINGS WILL BE LOST !!</prompt>
-        <execute>sudo systemctl restart display-manager</execute>
+        <prompt>pi will restart display to apply your change, are you sure you want to proceed now ? 
+		ANY UNSAVED SETTINGS WILL BE LOST !! 
+    Note that if you want the change to be permanent across reboots, you first have to enable read-write mode. Once this is done, enablemouse cursor, then you can finalize and enable secure read only mode.</prompt>
+        <execute>sudo systemctl restart display-manager.</execute>
       </action>
     </item>
     <item label="mouse cursor disable">
@@ -62,24 +78,24 @@
       </action>
       <action name="Execute">
         <prompt>pi will quickly REBOOT to apply your change, are you sure you want to proceed now ? 
-		ANY UNSAVED SETTINGS WILL BE LOST !!</prompt>
+		ANY UNSAVED SETTINGS WILL BE LOST !! 
+    Note that if you want the change to be permanent across reboots, you first have to enable read-write mode. Once this is done, enablemouse cursor, then you can finalize and enable secure read only mode.</prompt>
         <execute>sudo systemctl restart display-manager</execute>
       </action>
     </item>
   </menu>
 
-  <menu id="usbkey" label="USB key">
-    <item label="Format and copy default organs">
-      <action name="Execute">
-        <prompt>ALL DATA ON THE KEY WILL BE LOST !!, are you sure you want to proceed ?</prompt>
-        <prompt>Organnery will reboot after usb key format, are you sure you want to proceed ?</prompt>
-        <execute>organnery-config init-usb</execute>
-      </action>
-    </item>
-  </menu>
+  <separator />
 
   <item label="Show Terminal">
-    <action name="Execute"><execute>x-terminal-emulator</execute></action>
+    <action name="Execute">
+      <execute>x-terminal-emulator</execute>
+    </action>
+  </item>
+  <item label="Reboot now">
+    <action name="Execute">
+      <execute>sudo /sbin/reboot</execute>
+    </action>
   </item>
 
 </menu>

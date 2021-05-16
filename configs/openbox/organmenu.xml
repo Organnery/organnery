@@ -12,6 +12,7 @@
       <execute>/usr/share/organnery/scripts/midirecstart.sh</execute>
     </action>
   </item>
+
   <item label="STOP current recording">
     <action name="Execute">
       <execute>/usr/share/organnery/scripts/midirecstop.sh</execute>
@@ -21,6 +22,7 @@
   <separator />
 
   <menu id="your_midi_recordings" label="Your midi recordings" execute="perl /usr/share/organnery/scripts/menu_midireclist.pl"/>
+  
   <menu id="midi_demos" label="Midi Demos" execute="perl /usr/share/organnery/scripts/menu_midiplaydemo.pl"/>
   <item label="STOP currently playing">
     <action name="Execute">
