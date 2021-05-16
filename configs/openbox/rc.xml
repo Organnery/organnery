@@ -309,6 +309,7 @@
         <action name="ShowMenu">
           <menu>organmenu</menu>
         </action>
+      </mousebind>
       <mousebind button="C-Right" action="Press">
         <action name="Focus"/>
         <action name="Raise"/>
