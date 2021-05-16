@@ -24,6 +24,8 @@ fi
 mount /dev/$MEDIA /home/$USERNAME/stops/ -o rw,sync,noatime,noiversion,norelatime
 echo "mounted /dev/$MEDIA on /home/$USERNAME/stops/!" >> $HOME/organnery.log
 
+# TODO check mount is done and stops folder accessible or next test will fail
+
 # if usb drive contains no instrument files, copy defaults to it
 if [[ ! $(ls /home/$USERNAME/stops/*.ae0) ]]; then
 

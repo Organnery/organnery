@@ -102,7 +102,7 @@ elif [ "$1" = "init-usb" ]; then
 	# unmount partition
 	sudo umount /dev/sda1
 	# delete partition table
-	sudo dd if=/dev/zero of=/dev/sda bs=512 count=1 conv=notrunc
+	sudo dd if=/dev/zero of=/dev/sda bs=512 count=1000 conv=notrunc
 	# create partitions from template
 	sudo /sbin/sfdisk /dev/sda < /usr/share/organnery/data/usbkey.fdk
 	# format partitions
