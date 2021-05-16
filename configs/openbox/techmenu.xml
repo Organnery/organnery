@@ -85,6 +85,27 @@
     </item>
   </menu>
 
+  <menu id="network" label="Network config">
+    <item label="Set to default (ip=192.168.0.100/gw=192.168.0.1)">
+      <action name="Execute">
+        <prompt>Note that if you want the change to be permanent across reboots, you first have to enable read-write mode. Once this is done, set Network to default, then you can finalize and enable secure read only mode.</prompt>
+        <execute>organnery-config ip default</execute>
+      </action>
+    </item>
+    <item label="Set to DHCP">
+      <action name="Execute">
+        <prompt>Note that if you want the change to be permanent across reboots, you first have to enable read-write mode. Once this is done, set Network to default, then you can finalize and enable secure read only mode.</prompt>
+        <execute>organnery-config ip dhcp</execute>
+      </action>
+    </item>
+    <item label="Manual configuration">
+      <action name="Execute">
+        <prompt>this option not possible currently</prompt>
+        <execute></execute>
+      </action>
+    </item>
+  </menu>
+
   <separator />
 
   <item label="Show Terminal">
