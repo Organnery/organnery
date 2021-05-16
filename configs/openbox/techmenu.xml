@@ -69,7 +69,7 @@
         <prompt>pi will restart display to apply your change, are you sure you want to proceed now ? 
 		ANY UNSAVED SETTINGS WILL BE LOST !! 
     Note that if you want the change to be permanent across reboots, you first have to enable read-write mode. Once this is done, enablemouse cursor, then you can finalize and enable secure read only mode.</prompt>
-        <execute>sudo systemctl restart display-manager.</execute>
+        <execute>sudo systemctl restart display-manager</execute>
       </action>
     </item>
     <item label="mouse cursor disable">
