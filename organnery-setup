@@ -14,6 +14,16 @@ fi
 MEDIA=sda1
 USERNAME=user
 
+# copy presets
+if [ ! -f /home/$USERNAME/stops/.aeolus-presets ]; then
+    cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/stops/.aeolus-presets
+fi
+
+# copy audio params
+if [ ! -f /home/$USERNAME/stops/.aeolus-aparams ]; then
+    cp /usr/share/organnery/data/file.aeolus-aparams /home/$USERNAME/stops/.aeolus-aparams
+fi
+
 # quit if no usb drive detected
 if ! lsblk | grep $MEDIA; then
     echo "usb not connected! quitting" >> $HOME/organnery.log
@@ -28,25 +38,18 @@ echo "mounted /dev/$MEDIA on /home/$USERNAME/stops/!" >> $HOME/organnery.log
 
 # if usb drive contains no instrument files, copy defaults to it
 if [[ ! $(ls /home/$USERNAME/stops/*.ae0) ]]; then
-
     # copy stops and instrument definitions
     cp -r /usr/share/organnery/data/stops/* /home/$USERNAME/stops/
-
-    # copy the matching presets, overwrite if necessary
-    cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/stops/.aeolus-presets
-    cp /usr/share/organnery/data/file.aeolus-aparams /home/$USERNAME/stops/.aeolus-aparams
-
-    # copy default config to usb drive to make it user modifiable, if it doesn't exist
-    if [ ! -f /home/$USERNAME/stops/organnery.conf ] ; then
-      cp /etc/organnery/organnery.conf /home/$USERNAME/stops/organnery.conf
-    fi
-
-    # fix permissions
-    sudo chown -R $USERNAME:$USERNAME /home/$USERNAME
-    sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/.aeolus-*
-    sudo chmod -R 644 /home/$USERNAME/*.*
     echo "copied instrument files to /dev/$MEDIA!" >> $HOME/organnery.log
-
-else echo "existing instrument files found on /dev/$MEDIA!" >> $HOME/organnery.log
-
+else
+     echo "existing instrument files found on /dev/$MEDIA!" >> $HOME/organnery.log
 fi
+
+# copy default config to usb drive to make it user modifiable, if it doesn't exist
+if [ ! -f /home/$USERNAME/stops/organnery.conf ] ; then
+  cp /etc/organnery/organnery.conf /home/$USERNAME/stops/organnery.conf
+fi
+
+# fix permissions
+chown -R $USERNAME:$USERNAME /home/$USERNAME
+chmod -R 664 /home/$USERNAME/stops/*.*
