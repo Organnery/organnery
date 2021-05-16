@@ -42,7 +42,9 @@ if [[ ! $(ls /home/$USERNAME/stops/*.ae0) ]]; then
     fi
 
     # fix permissions
-    chown -R $USERNAME:$USERNAME /home/$USERNAME
+    sudo chown -R $USERNAME:$USERNAME /home/$USERNAME
+    sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/.aeolus-*
+    sudo chmod -R 644 /home/$USERNAME/*.*
     echo "copied instrument files to /dev/$MEDIA!" >> $HOME/organnery.log
 
 else echo "existing instrument files found on /dev/$MEDIA!" >> $HOME/organnery.log
