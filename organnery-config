@@ -98,7 +98,7 @@ elif [ "$1" = "organ-switch" ]; then
 
 elif [ "$1" = "init-usb" ]; then
 
-	echo "Format and fillup usb key with default data" >> /home/user/organnery.log
+	echo "Format usb key with default partition scheme" >> /home/user/organnery.log
 	# unmount partition
 	sudo umount /dev/sda1
 	# delete partition table
@@ -108,9 +108,9 @@ elif [ "$1" = "init-usb" ]; then
 	# format partitions
 	sudo /sbin/mkfs.ext4 -F -L ORGAN /dev/sda1
 	sudo /sbin/mkfs.vfat -F 32 -n DATA /dev/sda2
-	# copy data
-	sudo /usr/share/organnery/organnery-setup
 	echo "END usb key format" >> /home/user/organnery.log
+	# reboot
+	sudo /sbin/reboot
 
 else
 	echo "ERROR: organnery-config arguments not recognised!" >> /home/user/organnery.log

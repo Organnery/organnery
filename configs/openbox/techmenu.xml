@@ -72,7 +72,8 @@
     <item label="Format and copy default organs">
       <action name="Execute">
         <prompt>ALL DATA ON THE KEY WILL BE LOST !!, are you sure you want to proceed ?</prompt>
-        <execute>organnery-config format-usb</execute>
+        <prompt>Organnery will reboot after usb key format, are you sure you want to proceed ?</prompt>
+        <execute>organnery-config init-usb</execute>
       </action>
     </item>
   </menu>
