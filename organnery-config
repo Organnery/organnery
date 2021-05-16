@@ -59,7 +59,7 @@ elif [ "$1" = "pisound-disable" ]; then
         sudo sed -i "s/^PERIOD_SIZE=\"128\"/PERIOD_SIZE=\"1024\"/" $HOME/stops/organnery.conf
 
         echo "pisound disabled, onboard sound enabled for the next session" >> /home/user/organnery.log
-        sudo reboot
+        sudo /sbin/reboot
 
 elif [ "$1" = "pisound-enable" ]; then
 
@@ -71,7 +71,7 @@ elif [ "$1" = "pisound-enable" ]; then
         sudo sed -i "s/^PERIOD_SIZE=\"1024\"/PERIOD_SIZE=\"128\"/" $HOME/stops/organnery.conf
 
         echo "pisound enabled, onboard sound disabled for the next session" >> /home/user/organnery.log
-        sudo reboot
+        sudo /sbin/reboot
         
 elif [ "$1" = "cursor-disable" ]; then
 
