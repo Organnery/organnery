@@ -41,7 +41,7 @@ if [[ ! -d /home/$USERNAME/usb ]]; then
     chown $USERNAME:$USERNAME /home/$USERNAME/usb
 fi
 if lsblk | grep $DATA; then
-    mount /dev/$DATA /home/$USERNAME/stops/ -o rw,sync,noatime,noiversion,norelatime
+    mount /dev/$DATA /home/$USERNAME/usb/ -o rw,sync,noatime,noiversion,norelatime,uid=1000,gid=1000
     echo "mounted /dev/$DATA on /home/$USERNAME/usb/!" | tee -a $HOME/organnery.log
 fi
 
