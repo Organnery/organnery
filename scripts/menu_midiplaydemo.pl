@@ -59,7 +59,7 @@ sub menu {
   my $id = shift;
   my $label = shift;
   my $dir = shift;
-  say "<menu id=\"$id\" label=\"$label\" execute=\"cdh $dir\" />";
+  say "<menu id=\"$id\" label=\"$label\" execute=\"\" />";
 }
  
 # print a menu item
@@ -74,5 +74,3 @@ sub item {
   say "    </action>";
   say "  </item>";
 }
-
-

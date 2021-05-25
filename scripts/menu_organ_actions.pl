@@ -53,14 +53,14 @@ sub menu {
   my $label = shift;
   my $id = $label . "_menuid";
   say "<menu id=\"$id\" label=\"$label\">";
-  say "  <item label=\"Switch to this organ now and set as default\">";
+  say "  <item label=\"Switch to this organ now\">";
   say "    <action name=\"Execute\">";
   say "      <execute>";
   say "        organnery-config organ-switch $label";
   say "      </execute>";
   say "    </action>";
   say "  </item>";
-  say "  <item label=\"Set this organ as default for next reboot\">";
+  say "  <item label=\"Set this organ as default on startup\">";
   say "    <action name=\"Execute\">";
   say "      <execute>";
   say "        organnery-config organ-set $label";
