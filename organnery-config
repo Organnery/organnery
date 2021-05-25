@@ -113,7 +113,7 @@ elif [ "$1" = "organ-switch" ]; then
 elif [ "$1" = "init-usb" ]; then
 
 	# quit if no usb drive detected
-	if ! lsblk | grep $MEDIA; then
+	if ! lsblk | grep sda; then
 	    echo "usb not connected! quitting" 2>&1 | tee -a $HOME/organnery.log
 	    exit 0
 	fi
@@ -134,6 +134,13 @@ elif [ "$1" = "init-usb" ]; then
 	sudo /sbin/mkfs.ext4 -F -L ORGAN /dev/sda1 2>&1 | tee -a $HOME/organnery.log
 	sudo /sbin/mkfs.vfat -F 32 -n DATA /dev/sda2 2>&1 | tee -a $HOME/organnery.log
 	echo "END usb key format" 2>&1 | tee -a /home/user/organnery.log
+
+	# force copy of preset files
+	# sudo mount /dev/sda1 /home/user/stops/ -o rw,sync,noatime,noiversion,norelatime
+ #    cp /usr/share/organnery/data/file.aeolus-aparams /home/user/stops/.aeolus-aparams
+ #    cp /usr/share/organnery/data/file.aeolus-presets /home/user/stops/.aeolus-presets
+ #    sync
+ #    sudo umount /dev/sda1
 
 	# reboot
 	sudo /sbin/reboot	

@@ -15,16 +15,6 @@ MEDIA=sda1
 DATA=sda2
 USERNAME=user
 
-# copy presets
-if [ ! -f /home/$USERNAME/stops/.aeolus-presets ]; then
-    cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/stops/.aeolus-presets
-fi
-
-# copy audio params
-if [ ! -f /home/$USERNAME/stops/.aeolus-aparams ]; then
-    cp /usr/share/organnery/data/file.aeolus-aparams /home/$USERNAME/stops/.aeolus-aparams
-fi
-
 # quit if no usb drive detected
 if ! lsblk | grep $MEDIA; then
     echo "usb not connected! quitting" | tee -a $HOME/organnery.log
@@ -54,6 +44,16 @@ if [[ ! $(ls /home/$USERNAME/stops/*.ae0) ]]; then
     echo "copied instrument files to /dev/$MEDIA!" | tee -a $HOME/organnery.log
 else
      echo "existing instrument files found on /dev/$MEDIA!" | tee -a $HOME/organnery.log
+fi
+
+# copy presets
+if [ ! -f /home/$USERNAME/stops/.aeolus-presets ]; then
+    cp /usr/share/organnery/data/file.aeolus-presets /home/$USERNAME/stops/.aeolus-presets
+fi
+
+# copy audio params
+if [ ! -f /home/$USERNAME/stops/.aeolus-aparams ]; then
+    cp /usr/share/organnery/data/file.aeolus-aparams /home/$USERNAME/stops/.aeolus-aparams
 fi
 
 # copy default config to usb drive to make it user modifiable, if it doesn't exist
