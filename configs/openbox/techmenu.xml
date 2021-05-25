@@ -104,14 +104,20 @@
 
   <separator />
 
+  <item label="Restart session">
+    <action name="Execute">
+      <execute>sudo systemctl restart display-manager</execute>
+    </action>
+  </item>
+  <item label="Reconfigure Openbox">
+    <action name="Reconfigure" />
+  </item>
+  <item label="Reload Openbox">
+    <action name="Restart" />
+  </item>
   <item label="Show Terminal">
     <action name="Execute">
       <execute>x-terminal-emulator</execute>
-    </action>
-  </item>
-  <item label="Restart openbox session">
-    <action name="Execute">
-      <execute>sudo systemctl restart display-manager</execute>
     </action>
   </item>
   <item label="Reboot now">
