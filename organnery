@@ -30,6 +30,8 @@ echo AUDIO REC maximum record time : $AUDIO_REC_MAXTIME | tee -a $HOME/organnery
 echo AUDIO REC folder : $AUDIO_REC_FOLDER | tee -a $HOME/organnery.log
 echo AUDIO REC source : $AUDIO_REC_SOURCE | tee -a $HOME/organnery.log
 
+#--------------------------------------------------------------------------------------
+
 # set a sane mididings default
 if [ ! -f "$ORGANNERY_MIDIDINGS_SCRIPT" ]; then
 	ORGANNERY_MIDIDINGS_SCRIPT="/usr/share/organnery/configs/passthru.py"
@@ -49,6 +51,8 @@ cards_in=$(aconnect -i | grep type=kernel,card | awk -F[\ ,:] '{print $2}')
 cards_out=$(aconnect -o | grep type=kernel,card | awk -F[\ ,:] '{print $2}')
 echo --hardware ports in : $cards_in | tee -a $HOME/organnery.log
 echo --hardware ports out : $cards_out | tee -a $HOME/organnery.log
+
+#--------------------------------------------------------------------------------------
 
 # start aeolus
 echo starting aeolus | tee -a $HOME/organnery.log
@@ -81,28 +85,42 @@ do
 done
 echo mididings alsa midi port $port_mididings | tee -a $HOME/organnery.log
 
-# connect each hardware midi input to mididings input
+# get mididing named ports numbers
+from_aeolus=$(aconnect -o | grep from_aeolus | awk '{print $1}')
+from_hw=$(aconnect -o | grep from_hw | awk '{print $1}')
+to_aeolus=$(aconnect -i | grep to_aeolus | awk '{print $1}')
+to_hw=$(aconnect -i | grep to_hw | awk '{print $1}')
+
+#--------------------------------------------------------------------------------------
+
+# connect each hardware midi input to mididings "input filter" in
 echo "--connecting hardware midi inputs:" | tee -a $HOME/organnery.log
 for card_out in $cards_out; do
         echo $card_out to mididings | tee -a $HOME/organnery.log
-	aconnect "$card_out" $port_mididings:0
+	aconnect "$card_out" $port_mididings:$from_hw
 done
 
-# connect mididings out to aeolus in
+# connect mididings "input filter" out to aeolus in
 echo "--connecting mididings out to aeolus in" | tee -a $HOME/organnery.log
-aconnect $port_mididings:1 $port_aeolus:In
+aconnect "$port_mididings":"$to_aeolus" "$port_aeolus":0
 
-# connect aeolus out to each midi hardware output
+# connect aeolus out to mididings "output filter" in
+echo "--connecting mididings out to aeolus in" | tee -a $HOME/organnery.log
+  aconnect "$port_aeolus":1 "$port_mididings":"$from_aeolus"
+
+# connect mididings "output filter" out to each midi hardware output
 if [ $AEOLUS_CONNECT_MIDI_OUT = 1 ]
 then
-  echo "--Connecting aeolus midi outputs to hardware:" | tee -a $HOME/organnery.log
+  echo "--Connecting midi outputs to all hardware ports:" | tee -a $HOME/organnery.log
   for card_in in $cards_in; do
-        echo aeolus to $card_in | tee -a $HOME/organnery.log
-	aconnect "$port_aeolus":1 "$card_in"
+        echo midi out to $card_in | tee -a $HOME/organnery.log
+	aconnect "$port_mididings":"$to_hw" "$card_in"
   done
 else
-  echo "NOT connecting aeolus midi outputs" | tee -a $HOME/organnery.log
+  echo "NOT connecting midi outputs" | tee -a $HOME/organnery.log
 fi
+
+#--------------------------------------------------------------------------------------
 
 # ready
 echo "--" | tee -a $HOME/organnery.log
