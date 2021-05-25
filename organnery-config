@@ -16,29 +16,29 @@ if [ "$1" = "mount-boot" ]; then
 
 	# mount boot partition RW
 	mount_boot_rw
-	echo "boot partition now mounted rw" >> /home/user/organnery.log
+	echo "boot partition now mounted rw" 2>&1 | tee -a /home/user/organnery.log
 
 elif [ "$1" = "overlayfs-check" ]; then
 
 	# check whether overlayfs is enabled for the current boot
 	if grep -q "$OVERLAYFS_CMDLINE" /proc/cmdline; then
-		echo "overlayfs is enabled for current session" >> /home/user/organnery.log
+		echo "overlayfs is enabled for current session" 2>&1 | tee -a /home/user/organnery.log
 	else
-		echo "overlayfs is disabled for current session" >> /home/user/organnery.log
+		echo "overlayfs is disabled for current session" 2>&1 | tee -a /home/user/organnery.log
 	fi
 
 	# check whether overlayfs is enabled for the next boot
 	if grep -q "$OVERLAYFS_CMDLINE" /boot/cmdline.txt; then
-		echo "overlayfs is enabled for the next session" >> /home/user/organnery.log
+		echo "overlayfs is enabled for the next session" 2>&1 | tee -a /home/user/organnery.log
 	else
-		echo "overlayfs is disabled for the next session" >> /home/user/organnery.log
+		echo "overlayfs is disabled for the next session" 2>&1 | tee -a /home/user/organnery.log
 	fi
 
 elif [ "$1" = "overlayfs-disable" ]; then
 
 	mount_boot_rw
 	sudo sed -i "s; $OVERLAYFS_CMDLINE;;g" /boot/cmdline.txt
-	echo "overlayfs disabled for the next session" >> /home/user/organnery.log
+	echo "overlayfs disabled for the next session" 2>&1 | tee -a /home/user/organnery.log
 
 elif [ "$1" = "overlayfs-enable" ]; then
 
@@ -47,7 +47,7 @@ elif [ "$1" = "overlayfs-enable" ]; then
 		CMDLINE=`cat /boot/cmdline.txt`
 		echo "$CMDLINE $OVERLAYFS_CMDLINE" | sudo tee /boot/cmdline.txt > /dev/null
 	fi
-	echo "overlayfs enabled for the next session" >> /home/user/organnery.log
+	echo "overlayfs enabled for the next session" 2>&1 | tee -a /home/user/organnery.log
 
 elif [ "$1" = "pisound-disable" ]; then
 
@@ -58,7 +58,7 @@ elif [ "$1" = "pisound-disable" ]; then
         # update alsa config
         sudo sed -i "s/^PERIOD_SIZE=\"128\"/PERIOD_SIZE=\"1024\"/" $HOME/stops/organnery.conf
 
-        echo "pisound disabled, onboard sound enabled for the next session" >> /home/user/organnery.log
+        echo "pisound disabled, onboard sound enabled for the next session" 2>&1 | tee -a /home/user/organnery.log
         sudo /sbin/reboot
 
 elif [ "$1" = "pisound-enable" ]; then
@@ -70,35 +70,35 @@ elif [ "$1" = "pisound-enable" ]; then
         # update alsa config
         sudo sed -i "s/^PERIOD_SIZE=\"1024\"/PERIOD_SIZE=\"128\"/" $HOME/stops/organnery.conf
 
-        echo "pisound enabled, onboard sound disabled for the next session" >> /home/user/organnery.log
+        echo "pisound enabled, onboard sound disabled for the next session" 2>&1 | tee -a /home/user/organnery.log
         sudo /sbin/reboot
         
 elif [ "$1" = "cursor-disable" ]; then
 
 	sudo sed -i "s/^xserver-command=X -s 0 -dpms$/xserver-command=X -s 0 -dpms -nocursor/" /etc/lightdm/lightdm.conf
-	echo "mouse cursor disabled for the next session" >> /home/user/organnery.log
+	echo "mouse cursor disabled for the next session" 2>&1 | tee -a /home/user/organnery.log
 
 elif [ "$1" = "cursor-enable" ]; then
 
 	sudo sed -i "s/^xserver-command=X -s 0 -dpms -nocursor/xserver-command=X -s 0 -dpms/" /etc/lightdm/lightdm.conf
-	echo "mouse cursor enabled for the next session" >> /home/user/organnery.log
+	echo "mouse cursor enabled for the next session" 2>&1 | tee -a /home/user/organnery.log
 
 elif [ "$1" = "organ-set" ]; then
 
 	source $HOME/stops/organnery.conf
 	sudo sed -i "s/^INSTRUMENT_NAME=\"$INSTRUMENT_NAME\"/INSTRUMENT_NAME=\"$2\"/" $HOME/stops/organnery.conf
-	echo "Set new active organ to $2 for next reboot" >> /home/user/organnery.log
+	echo "Set new active organ to $2 for next reboot" 2>&1 | tee -a /home/user/organnery.log
 
 elif [ "$1" = "organ-switch" ]; then
 
 	source $HOME/stops/organnery.conf
 	sudo sed -i "s/^INSTRUMENT_NAME=\"$INSTRUMENT_NAME\"/INSTRUMENT_NAME=\"$2\"/" $HOME/stops/organnery.conf
 	killall aeolus
-	echo "Switching to new organ $2 now, and set it for next reboot" >> /home/user/organnery.log
+	echo "Switching to new organ $2 now, and set it for next reboot" 2>&1 | tee -a /home/user/organnery.log
 
 elif [ "$1" = "init-usb" ]; then
 
-	echo "Format usb key with default partition scheme" >> /home/user/organnery.log
+	echo "Format usb key with default partition scheme" 2>&1 | tee -a /home/user/organnery.log
 	# unmount partition
 	sudo umount /dev/sda1
 	# delete partition table
@@ -108,7 +108,7 @@ elif [ "$1" = "init-usb" ]; then
 	# format partitions
 	sudo /sbin/mkfs.ext4 -F -L ORGAN /dev/sda1
 	sudo /sbin/mkfs.vfat -F 32 -n DATA /dev/sda2
-	echo "END usb key format" >> /home/user/organnery.log
+	echo "END usb key format" 2>&1 | tee -a /home/user/organnery.log
 	# reboot
 	sudo /sbin/reboot
 
@@ -136,14 +136,14 @@ elif [ "$1" = "ip" ]; then
 			sudo sed -i 's/#\{0,1\}.*gateway.*/ gateway $3/' /etc/network/interfaces
 			sudo /sbin/reboot
 		else
-			echo "ERROR: organnery-config IP argument $3 is not a valid gateway address!" >> /home/user/organnery.log
+			echo "ERROR: organnery-config IP argument $3 is not a valid gateway address!" 2>&1 | tee -a /home/user/organnery.log
 		fi
 	else
-		echo "ERROR: organnery-config IP argument $2 is not a valid ip address!" >> /home/user/organnery.log
+		echo "ERROR: organnery-config IP argument $2 is not a valid ip address!" 2>&1 | tee -a /home/user/organnery.log
 	fi
 
 else
-	echo "ERROR: organnery-config arguments not recognised!" >> /home/user/organnery.log
+	echo "ERROR: organnery-config arguments not recognised!" 2>&1 | tee -a /home/user/organnery.log
 	echo "ERROR: organnery-config arguments not recognised!"
 	echo ""
 	echo "usage:"
