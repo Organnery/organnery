@@ -36,7 +36,7 @@ mount /dev/$MEDIA /home/$USERNAME/stops/ -o rw,sync,noatime,noiversion,norelatim
 echo "mounted /dev/$MEDIA on /home/$USERNAME/stops/!" | tee -a $HOME/organnery.log
 
 # mount the usb drive partition 2 in ~/usb
-if [[ -d /home/$USERNAME/usb ]]; then
+if [[ ! -d /home/$USERNAME/usb ]]; then
     mkdir /home/$USERNAME/usb
     chown $USERNAME:$USERNAME /home/$USERNAME/usb
 fi
