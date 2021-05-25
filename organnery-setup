@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "organnery-setup" >> $HOME/organnery.log
+echo "organnery-setup" | tee -a $HOME/organnery.log
 
 # set cpu governor to performance
 cpufreq-set -r -g performance
@@ -12,6 +12,7 @@ fi
 
 # simple automount script
 MEDIA=sda1
+DATA=sda2
 USERNAME=user
 
 # copy presets
@@ -26,13 +27,23 @@ fi
 
 # quit if no usb drive detected
 if ! lsblk | grep $MEDIA; then
-    echo "usb not connected! quitting" >> $HOME/organnery.log
+    echo "usb not connected! quitting" | tee -a $HOME/organnery.log
     exit 0
 fi
 
-# mount the usb drive on top of default stops directory
+# mount the usb drive partition 1 on top of default stops directory
 mount /dev/$MEDIA /home/$USERNAME/stops/ -o rw,sync,noatime,noiversion,norelatime
-echo "mounted /dev/$MEDIA on /home/$USERNAME/stops/!" >> $HOME/organnery.log
+echo "mounted /dev/$MEDIA on /home/$USERNAME/stops/!" | tee -a $HOME/organnery.log
+
+# mount the usb drive partition 2 in ~/usb
+if [[ -d /home/$USERNAME/usb ]]; then
+    mkdir /home/$USERNAME/usb
+    chown $USERNAME:$USERNAME /home/$USERNAME/usb
+fi
+if lsblk | grep $DATA; then
+    mount /dev/$DATA /home/$USERNAME/stops/ -o rw,sync,noatime,noiversion,norelatime
+    echo "mounted /dev/$DATA on /home/$USERNAME/usb/!" | tee -a $HOME/organnery.log
+fi
 
 # TODO check mount is done and stops folder accessible or next test will fail
 
@@ -40,9 +51,9 @@ echo "mounted /dev/$MEDIA on /home/$USERNAME/stops/!" >> $HOME/organnery.log
 if [[ ! $(ls /home/$USERNAME/stops/*.ae0) ]]; then
     # copy stops and instrument definitions
     cp -r /usr/share/organnery/data/stops/* /home/$USERNAME/stops/
-    echo "copied instrument files to /dev/$MEDIA!" >> $HOME/organnery.log
+    echo "copied instrument files to /dev/$MEDIA!" | tee -a $HOME/organnery.log
 else
-     echo "existing instrument files found on /dev/$MEDIA!" >> $HOME/organnery.log
+     echo "existing instrument files found on /dev/$MEDIA!" | tee -a $HOME/organnery.log
 fi
 
 # copy default config to usb drive to make it user modifiable, if it doesn't exist
@@ -53,3 +64,5 @@ fi
 # fix permissions
 chown -R $USERNAME:$USERNAME /home/$USERNAME
 chmod -R 664 /home/$USERNAME/stops/*.*
+chmod -R 664 /home/$USERNAME/usb/*.*
+echo "updated permissions in home/$USERNAME" | tee -a $HOME/organnery.log
