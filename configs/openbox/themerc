@@ -23,7 +23,7 @@ menu.separator.padding.width: 10
 menu.separator.padding.height: 2
 menu.overlap.x: -8
 menu.*.bg: flat solid
-menu.*.bg.color: #2f343f
+menu.*.bg.color: #DA6C54
 menu.*.color: #2f343f
 menu.title.text.color: #ffffff
 menu.items.text.color: #d8dee8

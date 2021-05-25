@@ -75,7 +75,7 @@
     </font>
     <font place="MenuHeader">
       <name>sans</name>
-      <size>9</size>
+      <size>16</size>
       <!-- font size in points -->
       <weight>normal</weight>
       <!-- 'bold' or 'normal' -->
@@ -84,7 +84,7 @@
     </font>
     <font place="MenuItem">
       <name>sans</name>
-      <size>9</size>
+      <size>16</size>
       <!-- font size in points -->
       <weight>normal</weight>
       <!-- 'bold' or 'normal' -->
@@ -93,7 +93,7 @@
     </font>
     <font place="ActiveOnScreenDisplay">
       <name>sans</name>
-      <size>9</size>
+      <size>16</size>
       <!-- font size in points -->
       <weight>bold</weight>
       <!-- 'bold' or 'normal' -->
@@ -102,7 +102,7 @@
     </font>
     <font place="InactiveOnScreenDisplay">
       <name>sans</name>
-      <size>9</size>
+      <size>16</size>
       <!-- font size in points -->
       <weight>bold</weight>
       <!-- 'bold' or 'normal' -->
@@ -461,6 +461,11 @@
       <mousebind button="Middle" action="Press">
         <action name="ShowMenu">
           <menu>client-list-combined-menu</menu>
+        </action>
+      </mousebind>
+      <mousebind button="Left" action="Press">
+        <action name="ShowMenu">
+          <menu>organmenu</menu>
         </action>
       </mousebind>
       <mousebind button="Right" action="Press">
