@@ -40,6 +40,10 @@ elif [ "$1" = "overlayfs-disable" ]; then
 	sudo sed -i "s; $OVERLAYFS_CMDLINE;;g" /boot/cmdline.txt
 	echo "overlayfs disabled for the next session" 2>&1 | tee -a /home/user/organnery.log
 
+    if [ "$2" = "reboot" ]; then
+		sudo /sbin/reboot
+	fi
+
 elif [ "$1" = "overlayfs-enable" ]; then
 
 	if ! grep -q "$OVERLAYFS_CMDLINE" /boot/cmdline.txt; then
@@ -48,6 +52,10 @@ elif [ "$1" = "overlayfs-enable" ]; then
 		echo "$CMDLINE $OVERLAYFS_CMDLINE" | sudo tee /boot/cmdline.txt > /dev/null
 	fi
 	echo "overlayfs enabled for the next session" 2>&1 | tee -a /home/user/organnery.log
+
+	if [ "$2" = "reboot" ]; then
+		sudo /sbin/reboot
+	fi
 
 elif [ "$1" = "pisound-disable" ]; then
 
@@ -59,7 +67,10 @@ elif [ "$1" = "pisound-disable" ]; then
         sudo sed -i "s/^PERIOD_SIZE=\"128\"/PERIOD_SIZE=\"1024\"/" $HOME/stops/organnery.conf
 
         echo "pisound disabled, onboard sound enabled for the next session" 2>&1 | tee -a /home/user/organnery.log
-        sudo /sbin/reboot
+
+        if [ "$2" = "reboot" ]; then
+			sudo /sbin/reboot
+		fi
 
 elif [ "$1" = "pisound-enable" ]; then
 
@@ -71,8 +82,11 @@ elif [ "$1" = "pisound-enable" ]; then
         sudo sed -i "s/^PERIOD_SIZE=\"1024\"/PERIOD_SIZE=\"128\"/" $HOME/stops/organnery.conf
 
         echo "pisound enabled, onboard sound disabled for the next session" 2>&1 | tee -a /home/user/organnery.log
-        sudo /sbin/reboot
         
+        if [ "$2" = "reboot" ]; then
+			sudo /sbin/reboot
+		fi
+
 elif [ "$1" = "cursor-disable" ]; then
 
 	sudo sed -i "s/^xserver-command=X -s 0 -dpms$/xserver-command=X -s 0 -dpms -nocursor/" /etc/lightdm/lightdm.conf
@@ -87,14 +101,14 @@ elif [ "$1" = "organ-set" ]; then
 
 	source $HOME/stops/organnery.conf
 	sudo sed -i "s/^INSTRUMENT_NAME=\"$INSTRUMENT_NAME\"/INSTRUMENT_NAME=\"$2\"/" $HOME/stops/organnery.conf
-	echo "Set new active organ to $2 for next reboot" 2>&1 | tee -a /home/user/organnery.log
+	echo "Set new active organ to $2 for next session" 2>&1 | tee -a /home/user/organnery.log
 
 elif [ "$1" = "organ-switch" ]; then
 
 	source $HOME/stops/organnery.conf
 	sudo sed -i "s/^INSTRUMENT_NAME=\"$INSTRUMENT_NAME\"/INSTRUMENT_NAME=\"$2\"/" $HOME/stops/organnery.conf
 	killall aeolus
-	echo "Switching to new organ $2 now, and set it for next reboot" 2>&1 | tee -a /home/user/organnery.log
+	echo "Switching to new organ $2 now, and set it for next session" 2>&1 | tee -a /home/user/organnery.log
 
 elif [ "$1" = "init-usb" ]; then
 
@@ -110,7 +124,6 @@ elif [ "$1" = "init-usb" ]; then
 	sudo /sbin/mkfs.vfat -F 32 -n DATA /dev/sda2
 	echo "END usb key format" 2>&1 | tee -a /home/user/organnery.log
 	# reboot
-	sudo /sbin/reboot
 
 elif [ "$1" = "ip" ]; then
 	if [ "$2" = "dhcp" ]; then
@@ -154,17 +167,21 @@ else
 	echo "organnery-config overlayfs-check"
 	echo "	checks the current overlayfs state"
 	echo ""
-	echo "organnery-config overlayfs-disable"
+	echo "organnery-config overlayfs-disable [reboot]"
 	echo "	disables overlayfs for the next session"
+	echo "	optional : reboot after command"
 	echo ""
-	echo "organnery-config overlayfs-enable"
+	echo "organnery-config overlayfs-enable [reboot]"
 	echo "	enables overlayfs for the next session"
+	echo "	optional : reboot after command"
     echo ""
-    echo "organnery-config pisound-disable"
+    echo "organnery-config pisound-disable [reboot]"
     echo "  disables Pisound card and enables onboard sound for the next session"
+	echo "	optional : reboot after command"
     echo ""
-    echo "organnery-config pisound-enable"
+    echo "organnery-config pisound-enable [reboot]"
     echo "  enables Pisound card and disables onboard sound for the next session"
+	echo "	optional : reboot after command"
     echo ""
     echo "organnery-config cursor-disable"
     echo "  disables mouse cursor for the next session"
